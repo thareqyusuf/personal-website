@@ -1,0 +1,3 @@
+{{- /* Status of a research entry. Allowed: wip, paused, done. */ -}}
+{{- $label := dict "wip" "In progress" "paused" "Paused" "done" "Written up" -}}
+<span class="status status-{{ . }}">{{ index $label . | default . }}</span>

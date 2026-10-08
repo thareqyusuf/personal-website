@@ -1,0 +1,28 @@
+{{- $sha := getenv "HUGO_BUILD_SHA" | default "dev" }}
+<footer class="site-foot">
+  <section class="probe" aria-labelledby="probe-h" data-state="pending">
+    <div class="probe-head">
+      <h2 id="probe-h">How this page reached you</h2>
+      <a href="/colophon/#probe">How it's measured</a>
+    </div>
+    <dl class="probe-grid">
+      <div class="cell"><dt>Served from</dt><dd><span class="v" data-k="colo">—</span><small data-k="colo-note">edge location</small></dd></div>
+      <div class="cell cell-hero"><dt>Your round trip to the edge</dt><dd><span class="v" data-k="rtt">—</span><small data-k="rtt-note">fastest of 5 requests</small></dd></div>
+      <div class="cell"><dt>Edge to origin</dt><dd><span class="v" data-k="origin">—</span><small data-k="origin-note">{{ site.Params.originName }}</small></dd></div>
+      <div class="cell"><dt>Time to first byte</dt><dd><span class="v" data-k="ttfb">—</span><small>this page load</small></dd></div>
+      <div class="cell"><dt>Protocol</dt><dd><span class="v" data-k="proto">—</span><small data-k="tls">TLS</small></dd></div>
+      <div class="cell"><dt>Edge cache</dt><dd><span class="v" data-k="cache">—</span><small data-k="age">for this URL</small></dd></div>
+    </dl>
+    <p class="probe-context" data-k="context">Measuring…</p>
+    <noscript><p class="probe-context">The measurements need JavaScript. Everything else on this site works without it.</p></noscript>
+  </section>
+  <div class="foot-meta">
+    <p>© {{ now.Year }} {{ site.Params.author }}. Words are mine; code on this site is MIT.</p>
+    <p>
+      <a href="/subscribe/">RSS</a>
+      <a href="https://github.com/{{ site.Params.github }}">GitHub</a>
+      <a href="/colophon/">Colophon</a>
+      <span class="build" title="Git commit this build came from">build {{ $sha }}</span>
+    </p>
+  </div>
+</footer>

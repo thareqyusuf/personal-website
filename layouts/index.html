@@ -1,0 +1,57 @@
+{{ define "main" }}
+<section class="hero">
+  <div class="hero-id">
+    <h1 class="name">{{ range $i, $w := split site.Params.author " " }}{{ if $i }}<br>{{ end }}{{ $w }}{{ end }}</h1>
+    <div class="lede">{{ .Content }}</div>
+  </div>
+  <div class="tools">
+    <figure class="tool tool-clock">
+      <figcaption><span>Clock 1.0</span><span>{{ site.Params.tzLabel }}</span></figcaption>
+      <p class="clock-date" data-clock-date>&nbsp;</p>
+      <p class="clock-time" data-clock>--:--:--</p>
+      <p class="clock-note" data-clock-note>My local time, so you know when I'll answer.</p>
+    </figure>
+    <figure class="tool tool-life">
+      <figcaption><span>Glider 1.0</span><span>Conway's life</span></figcaption>
+      <canvas data-life width="240" height="120" aria-label="Conway's Game of Life running on a small torus. Click to reseed."></canvas>
+      <p class="clock-note">Click to reseed.</p>
+    </figure>
+  </div>
+</section>
+
+{{- with site.GetPage "/now" }}
+<section class="panel now-panel" aria-labelledby="now-h">
+  <div class="panel-head">
+    <h2 id="now-h">What I'm working on</h2>
+    <a href="{{ .RelPermalink }}">Updated {{ .Date.Format "2 Jan 2006" }}</a>
+  </div>
+  {{ partial "focus-table.html" . }}
+</section>
+{{- end }}
+
+<section class="panel" aria-labelledby="w-h">
+  <div class="panel-head">
+    <h2 id="w-h">Writing</h2>
+    <a href="/blog/index.xml">RSS for writing</a>
+  </div>
+  {{- $posts := where site.RegularPages "Section" "blog" }}
+  {{- if $posts }}
+  <ol class="entries">
+    {{- range first 8 $posts }}{{ partial "entry.html" . }}{{ end }}
+  </ol>
+  {{- if gt (len $posts) 8 }}<p class="more"><a href="/blog/">All {{ len $posts }} posts</a></p>{{ end }}
+  {{- else }}
+  <p class="empty">No posts yet. The first one goes in <code>content/blog/</code>.</p>
+  {{- end }}
+</section>
+
+<section class="panel" aria-labelledby="r-h">
+  <div class="panel-head">
+    <h2 id="r-h">Research log</h2>
+    <a href="/research/index.xml">RSS for research</a>
+  </div>
+  <ol class="entries">
+    {{- range where site.RegularPages "Section" "research" }}{{ partial "entry.html" . }}{{ end }}
+  </ol>
+</section>
+{{ end }}

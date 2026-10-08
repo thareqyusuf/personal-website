@@ -1,0 +1,16 @@
+{{ define "main" }}
+<section class="panel list-page">
+  <div class="panel-head">
+    <h1>{{ .Title }}</h1>
+    {{- with .OutputFormats.Get "rss" }}<a href="{{ .RelPermalink }}">RSS for this section</a>{{ end }}
+  </div>
+  {{- with .Content }}<div class="prose list-intro">{{ . }}</div>{{ end }}
+  {{- if .Pages }}
+  <ol class="entries">
+    {{- range .Pages }}{{ partial "entry.html" . }}{{ end }}
+  </ol>
+  {{- else }}
+  <p class="empty">Nothing here yet.</p>
+  {{- end }}
+</section>
+{{ end }}

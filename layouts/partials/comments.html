@@ -1,0 +1,30 @@
+{{- /* giscus: comments live in GitHub Discussions on params.giscus.repo.
+       The iframe loads lazily, so pages without scrolling to the bottom never touch github. */ -}}
+{{- with site.Params.giscus }}
+{{- if and .repo .repoId .categoryId }}
+<section class="comments" aria-labelledby="comments-h">
+  <h2 id="comments-h">Comments</h2>
+  <p class="aside">Comments are GitHub Discussions. Sign in with GitHub to reply, or <a href="https://github.com/{{ .repo }}/discussions">read them on GitHub</a>.</p>
+  <script src="https://giscus.app/client.js"
+    data-repo="{{ .repo }}"
+    data-repo-id="{{ .repoId }}"
+    data-category="{{ .category }}"
+    data-category-id="{{ .categoryId }}"
+    data-mapping="{{ .mapping | default "pathname" }}"
+    data-strict="1"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="top"
+    data-theme="preferred_color_scheme"
+    data-lang="en"
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async></script>
+</section>
+{{- else if hugo.IsServer }}
+<section class="comments comments-off">
+  <h2>Comments</h2>
+  <p class="aside">Comments are off: set <code>params.giscus.repo</code>, <code>repoId</code> and <code>categoryId</code> in <code>hugo.toml</code>. This note only shows on the dev server.</p>
+</section>
+{{- end }}
+{{- end }}

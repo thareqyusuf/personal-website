@@ -1,0 +1,8 @@
+{{- /* One row in a post/research list. Research rows carry a status. */ -}}
+<li class="entry">
+  <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+  <div>
+    <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ with .Params.status }} {{ partial "status.html" . }}{{ end }}</h3>
+    {{- with .Description }}<p>{{ . }}</p>{{ end }}
+  </div>
+</li>

@@ -1,0 +1,21 @@
+{{ define "main" }}
+<article class="doc{{ if .Params.wide }} doc-wide{{ end }}">
+  <header class="doc-head">
+    <h1>{{ .Title }}</h1>
+    {{- if eq .Section "blog" }}
+    <p class="doc-meta">
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>
+      <span>{{ .ReadingTime }} min read</span>
+      {{- if gt .Lastmod (.Date.AddDate 0 0 1) }}<span>Revised {{ .Lastmod.Format "2 Jan 2006" }}</span>{{ end }}
+    </p>
+    {{- end }}
+  </header>
+  <div class="prose">
+    {{ .Content }}
+  </div>
+  {{- if eq .Section "blog" }}
+  <p class="follow">If this was useful, the <a href="/blog/index.xml">RSS feed</a> is the best way to get the next one.</p>
+  {{ partial "comments.html" . }}
+  {{- end }}
+</article>
+{{ end }}

@@ -1,0 +1,77 @@
+baseURL      = "https://example.com/"   # TODO: your domain
+languageCode = "en"
+title        = "Thareq Yusuf"            # TODO: confirm display name
+enableRobotsTXT = true
+enableGitInfo   = true                   # lastmod from git; CI checks out full history
+disableKinds    = ["taxonomy", "term"]   # no tag pages until there are enough posts to need them
+ignoreLogs      = ['warning-goldmark-raw-html']   # TODO markers are HTML comments; goldmark drops them, which is what we want
+
+[pagination]
+  pagerSize = 50
+
+[permalinks]
+  # URL = file name, so retitling a post never breaks links.
+  blog     = "/blog/:filename/"
+  research = "/research/:filename/"
+
+[frontmatter]
+  # Research entries set lastmod by hand (date of newest log entry); fall back to git, then date.
+  lastmod = ["lastmod", ":git", "date"]
+
+[outputs]
+  home    = ["HTML", "RSS"]
+  section = ["HTML", "RSS"]
+
+[services.rss]
+  limit = 50
+
+[markup.goldmark.renderer]
+  unsafe = false
+[markup.highlight]
+  noClasses = false        # colors come from assets/css/main.css, not inline styles
+  lineNos   = false
+
+[params]
+  author      = "Thareq Yusuf"           # TODO
+  description = "Platform engineer. Kernels, networks, storage engines, and lately the insides of language models."
+  timezone    = "Asia/Jakarta"           # drives the clock widget; IANA name
+  tzLabel     = "WIB"
+  # Shown as a base64 block on /about so scrapers have to work for it.
+  email       = "you@example.com"        # TODO
+  github      = "thareqyusuf"            # TODO
+  # Label for the origin box, shown in the probe strip. Match `set $origin_name` in deploy/nginx/site.conf.
+  originName  = "sin-1"
+
+  # Comments: GitHub Discussions via giscus. Get the ids from https://giscus.app
+  # Leave repo empty to turn comments off everywhere.
+  [params.giscus]
+    repo       = ""                      # "thareqyusuf/personal-website" once Discussions + giscus app are set up
+    repoId     = ""
+    category   = "Comments"
+    categoryId = ""
+    mapping    = "pathname"
+
+[security.funcs]
+  getenv = ["^HUGO_"]                    # HUGO_BUILD_SHA is injected by CI
+
+[menus]
+  [[menus.main]]
+    name = "Writing"
+    url  = "/blog/"
+    weight = 1
+  [[menus.main]]
+    name = "Research"
+    url  = "/research/"
+    weight = 2
+  [[menus.main]]
+    name = "Now"
+    url  = "/now/"
+    weight = 3
+  [[menus.main]]
+    name = "About"
+    url  = "/about/"
+    weight = 4
+  [[menus.main]]
+    name = "RSS"
+    url  = "/subscribe/"
+    weight = 5

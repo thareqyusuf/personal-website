@@ -1,0 +1,29 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{{- $title := cond .IsHome site.Title (printf "%s — %s" .Title site.Title) }}
+<title>{{ $title }}</title>
+{{- $desc := or .Description .Summary site.Params.description | plainify | truncate 180 }}
+<meta name="description" content="{{ $desc }}">
+<link rel="canonical" href="{{ .Permalink }}">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="{{ $title }}">
+<meta property="og:description" content="{{ $desc }}">
+<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+<meta property="og:url" content="{{ .Permalink }}">
+
+{{/* Feeds: site-wide plus per-section, so readers can subscribe to just research. */}}
+<link rel="alternate" type="application/rss+xml" title="{{ site.Title }} — everything" href="{{ "index.xml" | absURL }}">
+<link rel="alternate" type="application/rss+xml" title="{{ site.Title }} — writing" href="{{ "blog/index.xml" | absURL }}">
+<link rel="alternate" type="application/rss+xml" title="{{ site.Title }} — research log" href="{{ "research/index.xml" | absURL }}">
+
+<link rel="preload" href="/fonts/archivo-v1.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fragment-mono-v1.woff2" as="font" type="font/woff2" crossorigin>
+
+{{- $css := resources.Get "css/main.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+
+{{- /* Constants for the probe come from data/latency.yaml so the numbers live in one place. */}}
+{{- $cfg := dict "refs" (where site.Data.latency.refs "show" true) "humanize" site.Data.latency.humanize_factor "originName" site.Params.originName "tz" site.Params.timezone "tzLabel" site.Params.tzLabel }}
+<script id="site-cfg" type="application/json">{{ $cfg | jsonify | safeJS }}</script>
+{{- $js := resources.Get "js/site.js" | js.Build (dict "minify" true "target" "es2020") | fingerprint }}
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>

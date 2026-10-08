@@ -1,0 +1,11 @@
+{{- /* Renders .Params.focus from content/now.md as a two-column table. */ -}}
+<table class="focus">
+  <tbody>
+  {{- range .Params.focus }}
+    <tr>
+      <th scope="row">{{ .area }}</th>
+      <td>{{ if .link }}<a href="{{ .link }}">{{ .what | markdownify }}</a>{{ else }}{{ .what | markdownify }}{{ end }}{{ with .status }} {{ partial "status.html" . }}{{ end }}</td>
+    </tr>
+  {{- end }}
+  </tbody>
+</table>

@@ -1,0 +1,23 @@
+#!/bin/sh
+# Point /srv/site/current at an uploaded release, atomically, and prune old releases.
+# Usage: site-activate <git-sha>        (also how you roll back: pass an older sha)
+set -eu
+
+SITE=${SITE_ROOT:-/srv/site}
+KEEP=${KEEP_RELEASES:-5}
+sha=${1:-}
+
+case "$sha" in
+  ""|*[!0-9a-f]*) echo "usage: site-activate <hex git sha>" >&2; exit 2 ;;
+esac
+dir="$SITE/releases/$sha"
+[ -f "$dir/index.html" ] || { echo "no release at $dir (missing index.html)" >&2; exit 3; }
+
+# rename(2) over the old symlink is atomic: a request sees the old tree or the new one, never neither.
+ln -sfn "$dir" "$SITE/current.tmp"
+mv -Tf "$SITE/current.tmp" "$SITE/current"
+
+# Keep the newest $KEEP releases, never deleting the one now active.
+ls -1dt "$SITE"/releases/*/ | sed 's:/$::' | grep -vx "$dir" | tail -n +"$KEEP" | xargs -r rm -rf
+
+echo "active: $sha"

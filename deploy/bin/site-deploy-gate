@@ -1,0 +1,16 @@
+#!/bin/sh
+# Forced command for the CI deploy key (see authorized_keys line in bootstrap.sh).
+# The key can do exactly two things:
+#   rsync ... deploy@host:<sha>/     → upload into /srv/site/releases/<sha>/ (via rrsync jail)
+#   ssh deploy@host activate <sha>   → swap the live symlink
+set -eu
+cmd=${SSH_ORIGINAL_COMMAND:-}
+case "$cmd" in
+  "rsync --server"*)
+    exec /usr/bin/rrsync -no-del /srv/site/releases ;;
+  "activate "*)
+    exec /usr/local/bin/site-activate "${cmd#activate }" ;;
+  *)
+    echo "deploy key: only rsync uploads and 'activate <sha>' are allowed" >&2
+    exit 1 ;;
+esac

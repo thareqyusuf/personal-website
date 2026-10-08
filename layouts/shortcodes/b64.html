@@ -1,0 +1,7 @@
+{{- /* Email as base64, decoded on click. Usage: {{< b64 >}} */ -}}
+{{- $enc := site.Params.email | base64Encode -}}
+<div class="b64" data-b64="{{ $enc }}">
+  <p class="b64-label">Email, base64-encoded</p>
+  <code class="b64-blob">{{ $enc }}</code>
+  <button type="button" class="b64-btn">Decode</button>
+</div>

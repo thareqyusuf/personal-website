@@ -1,0 +1,12 @@
+{{ define "main" }}
+<article class="doc">
+  <header class="doc-head">
+    <h1>{{ .Title }}</h1>
+    <p class="doc-meta"><span>Updated {{ .Date.Format "2 January 2006" }}</span><span>Format from <a href="https://nownownow.com/about">nownownow.com</a></span></p>
+  </header>
+  {{ partial "focus-table.html" . }}
+  <div class="prose">
+    {{ .Content }}
+  </div>
+</article>
+{{ end }}
