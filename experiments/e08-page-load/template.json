@@ -1,0 +1,17 @@
+{
+  "id": "e08",
+  "title": "Full page load in a real browser",
+  "run_at": "2026-10-10T09:00:00Z",
+  "tool": "WebPageTest, Chrome, Cable, median of 3 runs",
+  "notes": ["Result links: <paste WebPageTest result URLs here>"],
+  "tables": [
+    {
+      "caption": "Median run per location. Times in ms, sizes in KB.",
+      "columns": ["Location", "View", "TTFB", "FCP", "LCP", "Requests", "Bytes in"],
+      "rows": [
+        ["<location>", "First", 0, 0, 0, 0, 0],
+        ["<location>", "Repeat", 0, 0, 0, 0, 0]
+      ]
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+name: lab
+
+# Run a Globalping experiment from GitHub, commit the results, and (optionally) publish them.
+# Actions → lab → Run workflow → pick an experiment.
+on:
+  workflow_dispatch:
+    inputs:
+      experiment:
+        description: "Experiment (see experiments/PLAN.md)"
+        type: choice
+        options: [e02, e01, e00, e03, e07, e04-start, e04]
+      publish:
+        description: "Deploy the site afterwards so /lab shows the new run (never for e04: a deploy purges the cache it measures)"
+        type: boolean
+        default: true
+  # E04 only: uncomment for the ~6 days of the retention run, then comment out again.
+  # schedule:
+  #   - cron: "17 * * * *"
+
+permissions:
+  contents: write   # commit results
+  actions: write    # trigger the deploy workflow
+
+concurrency:
+  group: lab
+  cancel-in-progress: false
+
+env:
+  EXP: ${{ github.event_name == 'schedule' && 'e04' || inputs.experiment }}
+
+jobs:
+  run:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Run ${{ env.EXP }}
+        env:
+          GLOBALPING_TOKEN: ${{ secrets.GLOBALPING_TOKEN }}   # optional: 500 instead of 250 tests/hour
+          ORIGIN_IP: ${{ secrets.ORIGIN_IP }}                 # e07 only; redacted from every file
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}           # e03 purge
+          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+        run: |
+          case "$EXP" in
+            e04-start) node experiments/run.mjs e04 --start ;;
+            e03)       node experiments/run.mjs e03 --purge ;;
+            *)         node experiments/run.mjs "$EXP" ;;
+          esac
+
+      - name: Commit results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add experiments data/lab
+          if git diff --cached --quiet; then echo "nothing new to commit"; exit 0; fi
+          git commit -m "lab: $EXP results $(date -u +%FT%TZ)"
+          git pull --rebase --quiet
+          git push
+        # Pushes made with GITHUB_TOKEN don't trigger other workflows, so this never deploys
+        # (and never purges the cache) by itself. That matters for e04.
+
+      - name: Publish
+        if: github.event_name == 'workflow_dispatch' && inputs.publish && !startsWith(inputs.experiment, 'e04')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy.yml --ref main

@@ -53,6 +53,11 @@ deploy/
   bootstrap.sh cf-ips.sh   one-time VPS setup; weekly Cloudflare IP refresh
   CLOUDFLARE.md            go-live runbook, cache rules, CI secrets
 .github/workflows/deploy.yml   build → check → rsync release → activate → purge → smoke test
+.github/workflows/lab.yml      run a Globalping experiment from GitHub, commit results, optionally deploy
+experiments/               performance experiments: PLAN.md (design), run.mjs, lib/, eNN-*/ (README + scripts + results/raw)
+data/lab/eNN/<stamp>.json  experiment summaries rendered by layouts/lab/ (newest first)
+content/lab/eNN-*.md       one page per experiment: status, question, prediction, "What I learned"
+deploy/nginx/loopback.conf 127.0.0.1:8081 listener used only by E05 load tests (installed/removed by its scripts)
 ```
 
 ## Content model
@@ -126,6 +131,29 @@ Push to `main` → Actions builds with `HUGO_BUILD_SHA` (shown in the footer) �
 `ssh deploy@host activate <sha7>` (atomic `rename(2)` of the `current` symlink, keeps 5) →
 purge everything on Cloudflare → smoke test via `vars.SITE_URL`.
 Rollback: `ssh deploy@host activate <older-sha>` then purge. PRs build and check but don't deploy.
+
+## Lab (experiments)
+
+`experiments/PLAN.md` is the design; each `experiments/eNN-*/README.md` has the question, the prediction,
+how to run it and threats to validity. The owner runs the experiments; don't invent or "fill in" results.
+
+- **Predictions are frozen.** Never edit the `prediction` in `content/lab/eNN-*.md` or an experiment
+  README after the first run. Disagreements go under "What I learned".
+- **Raw data is kept** in `experiments/eNN-*/results/raw/`; summaries go in `data/lab/eNN/<stamp>.json`
+  with the shape `{ id, title, run_at, build?, tool, notes[], tables[{caption, columns[], rows[][]}] }`.
+  `layouts/partials/lab-run.html` renders any file of that shape, so new experiments need no template work.
+- **The origin IP never goes into a committed file.** Scripts take it from `ORIGIN_IP` and
+  `lib/results.mjs` redacts it from everything written.
+- **No heavy load through Cloudflare.** Capacity tests target the loopback listener on the droplet (E05).
+  Through the edge, stay at ~20 req/s (E06).
+- **No deploys during E04** (retention): a deploy purges the cache being measured. Commits made by the
+  lab workflow use GITHUB_TOKEN and don't trigger deploys, on purpose.
+- Lab page `status`: `planned` | `running` | `complete`. Hugo treats `weight: 0` as unset, so weights start at 1.
+- The Globalping response field names in `experiments/lib/globalping.mjs` are from memory of the v1 API
+  and were tested only against a mock. E00 prints a raw result; trust that over the code.
+- Known footer probe issues that E00 is designed to confirm (fix only after it has run): a reload within
+  60 s comes from the browser cache but still prints a "Time to first byte"; "Edge to origin" is the last
+  hop only (upper tier → droplet), not the reader's PoP → origin path.
 
 ## Design system
 

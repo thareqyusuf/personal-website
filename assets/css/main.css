@@ -315,3 +315,30 @@ table.focus th { width: 11rem; font-weight: 650; border-right: var(--hair); }
 .build { font-family: var(--mono); color: var(--muted); }
 
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+
+/* ==========================================================================
+   Lab: result tables. Numbers right-aligned in mono so columns line up.
+   ========================================================================== */
+.status-planned { border-style: dashed; }
+.status-running { background: var(--signal-tint); }
+.status-complete { background: var(--ink); color: var(--sheet); }
+
+.lab-results { padding: 1.2rem var(--gutter) .5rem; border-bottom: var(--rule); }
+.lab-results h2 { font-size: 1.55rem; font-weight: 750; font-stretch: 112%; margin-bottom: .6rem; }
+.lab-results h3 { font-size: 1.1rem; font-weight: 700; margin: 1.6rem 0 .4rem; }
+.run-meta { display: flex; flex-wrap: wrap; gap: .3rem 1.2rem; margin: 0 0 1rem; color: var(--muted); font-size: .9rem; }
+.lab-table { overflow-x: auto; margin: 0 0 1.25rem; border: var(--rule); }
+.lab-table table { border-collapse: collapse; width: 100%; font-size: .92rem; }
+.lab-table caption { caption-side: top; text-align: left; padding: .6rem .8rem; border-bottom: var(--hair); color: var(--muted); font-size: .88rem; }
+.lab-table th, .lab-table td { padding: .45rem .7rem; border-bottom: var(--hair); text-align: left; vertical-align: top; white-space: nowrap; }
+.lab-table thead th { background: var(--ink); color: var(--sheet); font-weight: 650; }
+.lab-table tbody tr:last-child td { border-bottom: 0; }
+.lab-table td.num { text-align: right; font-family: var(--mono); font-size: .88rem; }
+.lab-index { margin: 0; border: 0; }
+.lab-index td, .lab-index th { padding-inline: var(--gutter); }
+.run-notes { margin: 0 0 1rem; padding-left: 1.2rem; color: var(--muted); font-size: .9rem; max-width: var(--measure); }
+.lab-earlier { border: var(--hair); margin: 0 0 .6rem; }
+.lab-earlier summary { padding: .5rem .8rem; cursor: pointer; font-family: var(--mono); font-size: .88rem; }
+.lab-earlier[open] summary { border-bottom: var(--hair); margin-bottom: .8rem; }
+.lab-earlier > :not(summary) { margin-inline: .8rem; }
+.doc .spec + .lab-results { border-top: 0; }

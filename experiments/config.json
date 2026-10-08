@@ -1,0 +1,33 @@
+{
+  "site": "https://thareqyusuf.com",
+  "host": "thareqyusuf.com",
+  "probes_per_city": 2,
+  "cities": [
+    { "region": "Asia",          "magic": "Jakarta" },
+    { "region": "Asia",          "magic": "Singapore" },
+    { "region": "Asia",          "magic": "Hong Kong" },
+    { "region": "Asia",          "magic": "Tokyo" },
+    { "region": "Asia",          "magic": "Mumbai" },
+    { "region": "Oceania",       "magic": "Sydney" },
+    { "region": "Europe",        "magic": "London" },
+    { "region": "Europe",        "magic": "Frankfurt" },
+    { "region": "Europe",        "magic": "Amsterdam" },
+    { "region": "Europe",        "magic": "Paris" },
+    { "region": "Europe",        "magic": "Stockholm" },
+    { "region": "North America", "magic": "New York" },
+    { "region": "North America", "magic": "Ashburn" },
+    { "region": "North America", "magic": "Chicago" },
+    { "region": "North America", "magic": "San Francisco" },
+    { "region": "North America", "magic": "Seattle" },
+    { "region": "North America", "magic": "Toronto" },
+    { "region": "South America", "magic": "Sao Paulo" },
+    { "region": "Africa",        "magic": "Johannesburg" },
+    { "region": "Middle East",   "magic": "Dubai" }
+  ],
+  "retention_cities": ["Jakarta", "Singapore", "Tokyo", "Sydney", "London", "Frankfurt", "New York", "San Francisco"],
+  "_notes": [
+    "magic is Globalping's free-form location matcher: city, country, ASN, network name, cloud region.",
+    "Append '+eyeball' (e.g. 'London+eyeball') to prefer residential ISP probes over data-center probes, which is closer to what real readers see. Confirm the tag name in Globalping's docs before relying on it.",
+    "Anonymous use allows 50 probes per measurement; the runner splits city lists into batches under that."
+  ]
+}

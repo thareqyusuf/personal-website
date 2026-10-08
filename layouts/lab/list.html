@@ -1,0 +1,26 @@
+{{ define "main" }}
+<section class="panel list-page">
+  <div class="panel-head">
+    <h1>{{ .Title }}</h1>
+    <a href="https://github.com/{{ site.Params.github }}/personal-website/blob/main/experiments/PLAN.md">Test plan</a>
+  </div>
+  {{- with .Content }}<div class="prose list-intro">{{ . }}</div>{{ end }}
+  <div class="lab-table lab-index">
+    <table>
+      <thead><tr><th scope="col">ID</th><th scope="col">Experiment</th><th scope="col">Status</th><th scope="col">Last run</th></tr></thead>
+      <tbody>
+      {{- range .Pages.ByWeight }}
+        {{- $runs := index (site.Data.lab | default dict) .Params.id }}
+        {{- $keys := slice }}{{ range $k, $_ := $runs }}{{ $keys = $keys | append $k }}{{ end }}
+        <tr>
+          <td><code>{{ upper .Params.id }}</code></td>
+          <td><a href="{{ .RelPermalink }}">{{ .Params.short | default .Title }}</a></td>
+          <td>{{ with .Params.status }}{{ partial "status.html" . }}{{ end }}</td>
+          <td>{{ with $keys }}{{ with index $runs (index (sort . "value" "desc") 0) }}{{ dateFormat "2 Jan 2006" (time .run_at) }}{{ end }}{{ else }}—{{ end }}</td>
+        </tr>
+      {{- end }}
+      </tbody>
+    </table>
+  </div>
+</section>
+{{ end }}

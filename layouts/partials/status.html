@@ -1,3 +1,3 @@
-{{- /* Status of a research entry. Allowed: wip, paused, done. */ -}}
-{{- $label := dict "wip" "In progress" "paused" "Paused" "done" "Written up" -}}
+{{- /* Status badge. Research: wip, paused, done. Lab: planned, running, complete. */ -}}
+{{- $label := dict "wip" "In progress" "paused" "Paused" "done" "Written up" "planned" "Planned" "running" "Running" "complete" "Complete" -}}
 <span class="status status-{{ . }}">{{ index $label . | default . }}</span>
