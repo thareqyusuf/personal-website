@@ -37,7 +37,7 @@ ignoreLogs      = ['warning-goldmark-raw-html']   # TODO markers are HTML commen
   timezone    = "Asia/Jakarta"           # drives the clock widget; IANA name
   tzLabel     = "WIB"
   # Shown as a base64 block on /about so scrapers have to work for it.
-  email       = "you@example.com"        # TODO
+  emails      = ["thareqyusuf@gmail.com", "thareq.yusuf@pm.me"]
   github      = "thareqyusuf"            # TODO
   # Label for the origin box, shown in the probe strip. Match `set $origin_name` in deploy/nginx/site.conf.
   originName  = "sgp1"            # DigitalOcean region slug

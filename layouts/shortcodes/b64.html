@@ -1,7 +1,9 @@
-{{- /* Email as base64, decoded on click. Usage: {{< b64 >}} */ -}}
-{{- $enc := site.Params.email | base64Encode -}}
+{{- /* Email addresses as base64, each decoded on click. Usage: {{< b64 >}} */ -}}
+{{- range $i, $addr := site.Params.emails }}
+{{- $enc := $addr | base64Encode }}
 <div class="b64" data-b64="{{ $enc }}">
-  <p class="b64-label">Email, base64-encoded</p>
+  <p class="b64-label">{{ if eq $i 0 }}Email{{ else }}Alternate email{{ end }}, base64-encoded</p>
   <code class="b64-blob">{{ $enc }}</code>
   <button type="button" class="b64-btn">Decode</button>
 </div>
+{{- end }}

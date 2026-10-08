@@ -27,7 +27,6 @@ endpoints, because `hugo server` has no `/__probe` and no cache headers.
 
 ```
 hugo.toml                  site params: author, timezone, originName, giscus ids, menu
-data/latency.yaml          reference latencies the probe compares against (single source of truth)
 content/
   _index.md                home page intro paragraph
   about.md now.md colophon.md subscribe.md
@@ -94,10 +93,6 @@ label in `footer.html`, the note set in `site.js`, `content/colophon.md` (#probe
 | Time to first byte | Navigation Timing `responseStart − requestStart` | Includes server/edge time; on a MISS includes the origin leg |
 | Protocol | `nextHopProtocol`; TLS version from trace | |
 | Edge cache | `HEAD` of the current path → `cf-cache-status`, `age` | Reflects the edge now, not necessarily this exact load |
-
-The context line multiplies the RTT against `data/latency.yaml` refs with `show: true` (skipping
-any the RTT is shorter than) and the "humanized" scale (1 ns → 1 s). To change the comparisons,
-edit the YAML, not the JS.
 
 Rules for `site.js`: measure only after `load`; every fetch must fail soft (cell shows `—` plus a
 reason); no timers faster than the Game of Life's 160 ms; respect `prefers-reduced-motion`

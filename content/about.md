@@ -27,7 +27,7 @@ On the side, I do [mechanistic interpretability](/research/) research. I want to
 
 - **RSS:** [everything](/index.xml), or just [writing](/blog/index.xml) or the [research log](/research/index.xml). Feeds carry the full text.
 - **GitHub:** I'm [@thareqyusuf](https://github.com/thareqyusuf). Comments on posts are GitHub Discussions, so replying there works too. <!-- TODO -->
-- **Email:** I read everything and answer slowly. The address is below; decoding it is the spam filter.
+- **Email:** I read everything and answer slowly. The addresses are below; decoding them is the spam filter.
 
 {{< b64 >}}
 

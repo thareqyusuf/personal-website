@@ -22,8 +22,8 @@
 {{- $css := resources.Get "css/main.css" | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
 
-{{- /* Constants for the probe come from data/latency.yaml so the numbers live in one place. */}}
-{{- $cfg := dict "refs" (where site.Data.latency.refs "show" true) "humanize" site.Data.latency.humanize_factor "originName" site.Params.originName "tz" site.Params.timezone "tzLabel" site.Params.tzLabel }}
+{{- /* Constants the probe and clock need. */}}
+{{- $cfg := dict "originName" site.Params.originName "tz" site.Params.timezone "tzLabel" site.Params.tzLabel }}
 <script id="site-cfg" type="application/json">{{ $cfg | jsonify | safeJS }}</script>
 {{- $js := resources.Get "js/site.js" | js.Build (dict "minify" true "target" "es2020") | fingerprint }}
 <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>

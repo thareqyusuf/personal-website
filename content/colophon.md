@@ -37,5 +37,3 @@ The panel at the bottom of each page measures the request that delivered it. [Th
 | Time to first byte | Navigation Timing, `responseStart − requestStart` | ms |
 | Protocol | `nextHopProtocol`, plus `tls=` from the trace | — |
 | Edge cache | `cf-cache-status` and `age` from a `HEAD` request for this URL | — |
-
-The comparison line uses reference latencies from a 2026 re-measure of [napkin-math](https://github.com/sirupsen/napkin-math), plus Jeff Dean's 2012 numbers where those still hold.

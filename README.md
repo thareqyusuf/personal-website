@@ -2,7 +2,7 @@
 
 Static Hugo site → nginx on one VPS → Cloudflare edge cache. Every page ends with a live
 panel measuring how that page reached the reader (edge location, RTT, edge→origin RTT, TTFB,
-protocol, cache status), with the RTT put in napkin-math terms.
+protocol, cache status).
 
 ```
 hugo server                      # write; http://localhost:1313 (probe shows partial data here)

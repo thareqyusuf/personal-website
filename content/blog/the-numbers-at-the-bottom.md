@@ -37,4 +37,4 @@ Leg (1) is the one you feel. Leg (2) only happens when the edge doesn't have a f
 
 ## Why bother
 
-Because I spend my days on numbers like these, and a personal site is a cheap place to keep myself honest about them. The comparison line under the panel, which puts your RTT in DRAM reads, NVMe reads and HDD seeks, uses the same reference table I use for napkin math.
+Because I spend my days on numbers like these, and a personal site is a cheap place to keep myself honest about them.

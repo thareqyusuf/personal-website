@@ -3,7 +3,7 @@
 
 const cfg = (() => {
   try { return JSON.parse(document.getElementById("site-cfg").textContent); }
-  catch { return { refs: [], humanize: 1e9, tz: "UTC", tzLabel: "UTC" }; }
+  catch { return { tz: "UTC", tzLabel: "UTC" }; }
 })();
 
 /* ------------------------------------------------------------------ probe */
@@ -23,9 +23,6 @@ const fmtMs = (ms) =>
   : ms < 1 ? `${Math.round(ms * 1000)} µs`
   : ms < 10 ? `${ms.toFixed(1)} ms`
   : `${Math.round(ms)} ms`;
-
-const fmtCount = (n) =>
-  n >= 100 ? Math.round(n).toLocaleString("en") : n >= 10 ? n.toFixed(0) : n.toFixed(1);
 
 function fmtHumanSeconds(s) {
   const units = [
@@ -148,18 +145,6 @@ async function probe() {
     set("age", st ? (age ? `copy is ${fmtHumanSeconds(Number(age))} old` : "for this URL") : "nothing cached in front");
   } catch { set("cache", "—"); }
 
-  // 5. Put the RTT in context with the napkin-math reference table.
-  if (rtt != null) {
-    const ns = rtt * 1e6;
-    // Skip references the RTT is shorter than ("0.0 HDD seeks" says nothing).
-    let parts = (cfg.refs || []).filter((r) => ns / r.ns >= 1).map((r) => `${fmtCount(ns / r.ns)} ${r.label}`);
-    if (!parts.length) parts = [`a fraction of one ${cfg.refs?.[0]?.label?.replace(/s$/, "") || "memory read"}`];
-    const list = parts.length > 1 ? `${parts.slice(0, -1).join(", ")}, or ${parts.at(-1)}` : parts[0];
-    const human = fmtHumanSeconds((ns * (cfg.humanize || 1e9)) / 1e9);
-    set("context", `That round trip took as long as ${list}. If 1 ns lasted 1 s, it would take ${human}.`);
-  } else {
-    set("context", "Couldn't measure a round trip from this browser.");
-  }
   root.dataset.state = "done";
 }
 
