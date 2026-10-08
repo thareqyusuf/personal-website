@@ -8,7 +8,7 @@ description: "What I'm focused on this month."
 focus:
   - area: Research
     what: "Mechanistic interpretability: TODO, one line on the question you're chasing"
-    link: /research/mi-wip/
+    link: /research/monitor-readout-loss/
     status: wip
   - area: Work
     what: "TODO: the platform problem taking most of your week"
