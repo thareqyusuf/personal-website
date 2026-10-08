@@ -55,14 +55,16 @@ Check: `curl -sk https://<VPS IP>/` from your laptop should **hang or be refused
 
 ## 4. Cache rules (the "edge caching" part)
 
-**Caching → Cache Rules**, in this order:
+**Caching → Cache Rules → Create rule**. One rule is enough:
 
-| # | Name | Match | Action |
-|---|---|---|---|
-| 1 | Bypass probe | `URI Path equals /__probe` | **Bypass cache** |
-| 2 | Cache the site | `Hostname equals thareqyusuf.com` | **Eligible for cache**. Edge TTL: *use cache-control header if present*. Browser TTL: *respect origin* |
+- **Rule name:** `Cache the site`
+- **If incoming requests match:** Custom filter expression → **Edit expression**, paste:
+  ```
+  (http.host eq "thareqyusuf.com" and http.request.uri.path ne "/__probe")
+  ```
+- **Cache eligibility:** **Eligible for cache**. Leave Edge TTL and Browser TTL at their defaults, which use the `Cache-Control` headers nginx sends.
 
-Without rule 2, Cloudflare only caches by file extension and never caches HTML. With it, the `s-maxage` values nginx sends decide edge TTLs (see the table in `content/colophon.md`).
+Without this rule, Cloudflare only caches by file extension and never caches HTML. With it, the `s-maxage` values nginx sends decide edge TTLs (see the table in `content/colophon.md`). `/__probe` is excluded in the expression rather than by a separate bypass rule: when several cache rules match, the later one wins, so rule order would matter. nginx also sends `no-store` for it.
 
 Also worth turning on:
 - **Speed → Optimization → Protocol:** HTTP/3 (QUIC) on, 0-RTT on (static GETs are safe to replay).
