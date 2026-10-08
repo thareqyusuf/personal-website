@@ -1,4 +1,4 @@
-baseURL      = "https://example.com/"   # TODO: your domain
+baseURL      = "https://thareqyusuf.com/"
 languageCode = "en"
 title        = "Thareq Yusuf"            # TODO: confirm display name
 enableRobotsTXT = true
@@ -40,7 +40,7 @@ ignoreLogs      = ['warning-goldmark-raw-html']   # TODO markers are HTML commen
   email       = "you@example.com"        # TODO
   github      = "thareqyusuf"            # TODO
   # Label for the origin box, shown in the probe strip. Match `set $origin_name` in deploy/nginx/site.conf.
-  originName  = "sin-1"
+  originName  = "sgp1"            # DigitalOcean region slug
 
   # Comments: GitHub Discussions via giscus. Get the ids from https://giscus.app
   # Leave repo empty to turn comments off everywhere.

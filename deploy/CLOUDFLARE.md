@@ -2,21 +2,31 @@
 
 About an hour end to end. Do these in order; each step says how to check it worked.
 
-## 0. Pick the VPS
+## 0. Create the droplet (DigitalOcean, Singapore)
 
-- 1 vCPU / 1 GB is plenty: nginx serving static files out of page cache does tens of thousands of requests per second, and the edge absorbs most traffic anyway.
-- **Region:** put it near your readers *and* near a big Cloudflare data center, since the edge→origin leg only matters on a cache miss. From Jakarta, Singapore is ~10–15 ms away and is a major hub. A Jakarta VPS is closer for you but usually costs more for a worse network.
-- Ubuntu 24.04 or Debian 12. Point an SSH key at it.
+DigitalOcean → **Create → Droplets**:
+
+- **Region:** Singapore, datacenter **SGP1**.
+- **Image:** Ubuntu 24.04 LTS.
+- **Size:** Basic, Regular, **$6/mo** (1 vCPU, 1 GB, 25 GB, 1 TB transfer). nginx serving static files from page cache needs almost nothing, and Cloudflare absorbs most traffic.
+- **Authentication:** SSH key only (add your laptop's public key).
+- **Advanced:** tick **Enable IPv6** (free).
+- **Hostname:** anything. The site calls this box `sgp1` (`params.originName` in `hugo.toml`, `$origin_name` in `deploy/nginx/site.conf`).
+- Skip DigitalOcean's Cloud Firewall: `bootstrap.sh` sets up ufw with the same rules (SSH open, 443 from Cloudflare only).
+
+Why Singapore: it's ~10–15 ms from Jakarta and one of Cloudflare's biggest hubs. The cost is on cache misses for far readers: a Singapore origin adds roughly ~320 ms for London and ~460 ms for US East, versus ~30 / ~180 ms from Frankfurt. Smart Tiered Cache (step 4) cuts how often the droplet is hit, but not that distance: the upper tier sits next to the origin. See *Moving to another region* at the end if that trade changes.
+
+Then copy the deploy scripts over from your laptop (`scp -r deploy root@<droplet IP>:/root/`) and continue below.
 
 ## 1. Domain on Cloudflare
 
-1. Add the domain to Cloudflare and switch nameservers at your registrar.
-2. DNS: `A example.com → <VPS IPv4>` (and `AAAA` if you have IPv6), **Proxied** (orange cloud). Add `CNAME www → example.com`, also Proxied.
+1. Done: thareqyusuf.com was registered through Cloudflare Registrar, so it's already on Cloudflare's nameservers.
+2. DNS: `A thareqyusuf.com → <VPS IPv4>` (and `AAAA` if you have IPv6), **Proxied** (orange cloud). Add `CNAME www → thareqyusuf.com`, also Proxied.
 
 ## 2. TLS between Cloudflare and the origin
 
 1. **SSL/TLS → Overview:** mode **Full (strict)**.
-2. **SSL/TLS → Origin Server → Create Certificate** (RSA or ECDSA, hostnames `example.com, *.example.com`, 15 years). Save the two PEMs on the VPS:
+2. **SSL/TLS → Origin Server → Create Certificate** (RSA or ECDSA, hostnames `thareqyusuf.com, *.thareqyusuf.com`, 15 years). Save the two PEMs on the VPS:
    ```
    sudo install -d -m 700 /etc/ssl/cloudflare
    sudo tee /etc/ssl/cloudflare/origin.pem   # paste certificate
@@ -41,7 +51,7 @@ sudo DEPLOY_PUBKEY="$(cat deploy_key.pub)" ./deploy/bootstrap.sh
 ```
 It prints the host key line for `DEPLOY_KNOWN_HOSTS` at the end.
 
-Check: `curl -sk https://<VPS IP>/` from your laptop should **hang or be refused** (443 only accepts Cloudflare IPs), and `https://example.com/` should show "First deploy pending."
+Check: `curl -sk https://<VPS IP>/` from your laptop should **hang or be refused** (443 only accepts Cloudflare IPs), and `https://thareqyusuf.com/` should show "First deploy pending."
 
 ## 4. Cache rules (the "edge caching" part)
 
@@ -50,7 +60,7 @@ Check: `curl -sk https://<VPS IP>/` from your laptop should **hang or be refused
 | # | Name | Match | Action |
 |---|---|---|---|
 | 1 | Bypass probe | `URI Path equals /__probe` | **Bypass cache** |
-| 2 | Cache the site | `Hostname equals example.com` | **Eligible for cache**. Edge TTL: *use cache-control header if present*. Browser TTL: *respect origin* |
+| 2 | Cache the site | `Hostname equals thareqyusuf.com` | **Eligible for cache**. Edge TTL: *use cache-control header if present*. Browser TTL: *respect origin* |
 
 Without rule 2, Cloudflare only caches by file extension and never caches HTML. With it, the `s-maxage` values nginx sends decide edge TTLs (see the table in `content/colophon.md`).
 
@@ -61,9 +71,9 @@ Also worth turning on:
 
 Check (twice, the second should be HIT):
 ```
-curl -sI https://example.com/ | grep -iE 'cf-cache-status|cache-control|age'
-curl -s  https://example.com/__probe     # {"origin":"sin-1","srtt_us":...}
-curl -sI https://example.com/__probe | grep -i cf-cache-status   # BYPASS or DYNAMIC, never HIT
+curl -sI https://thareqyusuf.com/ | grep -iE 'cf-cache-status|cache-control|age'
+curl -s  https://thareqyusuf.com/__probe     # {"origin":"sgp1","srtt_us":...}
+curl -sI https://thareqyusuf.com/__probe | grep -i cf-cache-status   # BYPASS or DYNAMIC, never HIT
 ```
 
 ## 5. CI secrets
@@ -78,7 +88,7 @@ GitHub repo → Settings → Secrets and variables → Actions:
 | `CF_ZONE_ID` | Overview page of the zone, right sidebar |
 | `CF_API_TOKEN` | My Profile → API Tokens → Create → Custom: *Zone · Cache Purge · Purge*, scoped to this zone only |
 
-Repository **variable** `SITE_URL` = `https://example.com` turns on the post-deploy smoke test.
+Repository **variable** `SITE_URL` = `https://thareqyusuf.com` turns on the post-deploy smoke test.
 
 Create an environment named `production` (Settings → Environments) if you want manual approval before deploys.
 
@@ -96,3 +106,12 @@ Push to `main`. The Actions log ends with `active: <sha>` and a purge.
 ssh -i deploy_key deploy@<host> activate <older-sha>
 ```
 then purge the cache from the dashboard (or re-run the workflow's purge step). The last 5 releases are kept on disk.
+
+## Moving to another region
+
+The droplet holds nothing you can't rebuild: CI produces the site and this repo holds the config. So moving (say, SGP1 → FRA1, same price) means building a new box and then switching over, with no downtime:
+
+1. Create a droplet in the new region as in step 0. Copy `/etc/ssl/cloudflare/` from the old box, then run `bootstrap.sh` with the same `DEPLOY_PUBKEY`.
+2. Set the new name in `hugo.toml` (`originName`) and `deploy/nginx/site.conf` (`$origin_name`), e.g. `sgp1`. Update the `DEPLOY_HOST` and `DEPLOY_KNOWN_HOSTS` secrets, then push. The deploy lands on the new box while the old one keeps serving.
+3. In Cloudflare DNS, point the `A` (and `AAAA`) record at the new IP. Readers only ever see Cloudflare's addresses, so a proxied record switches in seconds.
+4. Check that `curl -s https://thareqyusuf.com/__probe` reports the new origin name, then destroy the old droplet.

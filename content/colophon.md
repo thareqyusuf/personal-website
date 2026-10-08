@@ -11,7 +11,7 @@ This site is static HTML built by [Hugo](https://gohugo.io), served by nginx on 
 reader ── Cloudflare edge (cache, TLS, HTTP/3) ── nginx origin (TLS, mTLS from edge only)
 ```
 
-- **Origin:** one VPS running nginx. TODO: provider and region. Port 443 accepts only Cloudflare's IP ranges and requires Cloudflare's client certificate (authenticated origin pulls).
+- **Origin:** one DigitalOcean droplet in Singapore (SGP1) running nginx. Port 443 accepts only Cloudflare's IP ranges and requires Cloudflare's client certificate (authenticated origin pulls).
 - **Deploys:** a push to `main` builds the site in GitHub Actions, rsyncs it into a new release directory, swaps a symlink atomically, and purges the edge cache.
 - **Fonts:** [Archivo](https://github.com/Omnibus-Type/Archivo) for text and [Fragment Mono](https://github.com/weiweihuanghuang/fragment-mono) for code and measurements. Both are self-hosted and licensed under the SIL Open Font License.
 
