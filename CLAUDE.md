@@ -173,7 +173,7 @@ Tokens are at the top of `assets/css/main.css`. Use them and don't add new color
 
 - `hugo.toml`: `baseURL`, `title`/`author`, `email`, `github`, `originName`, `[params.giscus]` ids.
 - `deploy/nginx/site.conf`: `server_name`, `$origin_name`.
-- Content: the "Reading" row in `now.md`; home intro and about page are drafted from the CV and marked for a voice pass.
+- Content: home intro and about page are drafted from the CV and marked for a voice pass.
 - After first deploy, verify: whether `Server-Timing: cfL4` appears on HTML responses
   (`curl -sI https://<domain>/ | grep -i server-timing`); if not, the RTT cell uses the HTTP fallback,
   which is fine but the label must say so (it does).

@@ -15,8 +15,6 @@ focus:
   - area: Building
     what: "This site: nginx origin behind Cloudflare, with live latency in the footer"
     link: /colophon/
-  - area: Reading
-    what: "TODO: a paper or book, with a link"
 ---
 
 <!-- TODO: a short paragraph per area if you want more than the table. Update the `date` whenever you edit. -->
