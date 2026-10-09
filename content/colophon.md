@@ -23,6 +23,7 @@ reader ── Cloudflare edge (cache, TLS, HTTP/3) ── nginx origin (TLS, mTL
 | Fingerprinted CSS/JS | 1 year, immutable | 1 year | The file name changes when the content does |
 | Fonts (`-v1.woff2`) | 1 year, immutable | 1 year | Versioned by file name |
 | RSS feeds | 15 min | 1 hour | Readers poll; keep it cheap |
+| `/cv.pdf` | 5 min | 7 days | A new CV should show up within minutes |
 | `/__probe` | never | never | It's a measurement |
 
 ## The probe {#probe}

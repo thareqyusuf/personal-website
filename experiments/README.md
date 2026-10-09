@@ -1,7 +1,9 @@
 # Experiments
 
-Measurements of how thareqyusuf.com performs, designed in [`PLAN.md`](PLAN.md), run by hand or by
-GitHub Actions, and published at [/lab/](https://thareqyusuf.com/lab/).
+Measurements of how thareqyusuf.com performs, designed in [`PLAN.md`](PLAN.md), run by hand.
+
+**Not published.** The site's `/lab/` section, its layouts, `data/lab/` and the `lab` GitHub workflow were
+removed in October 2026. The scripts still run and still write summaries to `data/lab/`, but nothing renders them.
 
 ## Layout
 

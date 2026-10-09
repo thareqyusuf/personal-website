@@ -1,17 +1,17 @@
 ---
 title: "Now"
 layout: "now"
-date: 2026-10-08
+date: 2026-10-09
 description: "What I'm focused on this month."
 # Rows here also render on the home page. Keep each `what` to one line.
 # status (optional): wip | paused | done
 focus:
   - area: Research
-    what: "Mechanistic interpretability: TODO, one line on the question you're chasing"
+    what: "Mechanistic interpretability: how much attack signal a weak LLM monitor throws away in its score"
     link: /research/monitor-readout-loss/
     status: wip
   - area: Work
-    what: "TODO: the platform problem taking most of your week"
+    what: "Cilium network policy and Falco/Tetragon runtime detection on a regulated gambling platform"
   - area: Building
     what: "This site: nginx origin behind Cloudflare, with live latency in the footer"
     link: /colophon/

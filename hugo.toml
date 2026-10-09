@@ -33,7 +33,7 @@ ignoreLogs      = ['warning-goldmark-raw-html']   # TODO markers are HTML commen
 
 [params]
   author      = "Thareq Yusuf"           # TODO
-  description = "Platform engineer. Kernels, networks, storage engines, and lately the insides of language models."
+  description = "Platform engineer. Kubernetes networking with eBPF, runtime security, GPU clusters, and lately the insides of language models."
   timezone    = "Asia/Jakarta"           # drives the clock widget; IANA name
   tzLabel     = "WIB"
   # Shown as a base64 block on /about so scrapers have to work for it.
@@ -64,18 +64,14 @@ ignoreLogs      = ['warning-goldmark-raw-html']   # TODO markers are HTML commen
     url  = "/research/"
     weight = 2
   [[menus.main]]
-    name = "Lab"
-    url  = "/lab/"
-    weight = 3
-  [[menus.main]]
     name = "Now"
     url  = "/now/"
-    weight = 4
+    weight = 3
   [[menus.main]]
     name = "About"
     url  = "/about/"
-    weight = 5
+    weight = 4
   [[menus.main]]
     name = "RSS"
     url  = "/subscribe/"
-    weight = 6
+    weight = 5

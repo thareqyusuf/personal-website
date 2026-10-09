@@ -1,7 +1,9 @@
 # CLAUDE.md
 
-Personal site for a platform engineer (kernel, networking, storage) who also does mechanistic
-interpretability research. Static Hugo site, served by nginx on one VPS, with Cloudflare in front
+Personal site for a platform engineer (Kubernetes networking with eBPF, runtime security, GPU clusters)
+who also does mechanistic interpretability research. Biography and job history come from the owner's CV
+(`static/cv.pdf`, built from `~/Documents/cv/typst/out/cv-infra.pdf`); keep `about.md`, the home intro and
+`now.md` consistent with it. Static Hugo site, served by nginx on one VPS, with Cloudflare in front
 as the edge cache. Its signature feature is a **live probe panel** in the footer of every page that
 measures how that page reached the reader. Design is brutalist: hard 2px rules, a bordered sheet
 on a cool grey page, one loud ultramarine band (the probe), no decoration that isn't information.
@@ -53,10 +55,8 @@ deploy/
   bootstrap.sh cf-ips.sh   one-time VPS setup; weekly Cloudflare IP refresh
   CLOUDFLARE.md            go-live runbook, cache rules, CI secrets
 .github/workflows/deploy.yml   build → check → rsync release → activate → purge → smoke test
-.github/workflows/lab.yml      run a Globalping experiment from GitHub, commit results, optionally deploy
-experiments/               performance experiments: PLAN.md (design), run.mjs, lib/, eNN-*/ (README + scripts + results/raw)
-data/lab/eNN/<stamp>.json  experiment summaries rendered by layouts/lab/ (newest first)
-content/lab/eNN-*.md       one page per experiment: status, question, prediction, "What I learned"
+static/cv.pdf              the owner's CV, linked from /about and the footer as /cv.pdf
+experiments/               performance experiments (PLAN.md, run.mjs, lib/, eNN-*/). Not published: the /lab section was removed
 deploy/nginx/loopback.conf 127.0.0.1:8081 listener used only by E05 load tests (installed/removed by its scripts)
 ```
 
@@ -112,6 +112,7 @@ reason); no timers faster than the Game of Life's 160 ms; respect `prefers-reduc
 | `/fonts/*` | immutable 1y | **Changing a font file means a new name** (`-v2.woff2`) and updating `main.css` + preloads in `head.html` |
 | `index.xml` feeds | `max-age=900, s-maxage=3600` | `application/rss+xml` |
 | `/__probe` | `no-store` | Also bypassed by a Cloudflare cache rule. Must never be cached |
+| `/cv.pdf` | `public, max-age=300, s-maxage=604800` | `Content-Disposition: inline; filename="thareq-yusuf-cv.pdf"`. Replace the file in `static/` to update |
 | `/404.html` | short | |
 
 nginx gotcha: `add_header` in a location **discards** inherited `add_header`s. Every location includes
@@ -132,28 +133,13 @@ Push to `main` → Actions builds with `HUGO_BUILD_SHA` (shown in the footer) �
 purge everything on Cloudflare → smoke test via `vars.SITE_URL`.
 Rollback: `ssh deploy@host activate <older-sha>` then purge. PRs build and check but don't deploy.
 
-## Lab (experiments)
+## Experiments (unpublished)
 
-`experiments/PLAN.md` is the design; each `experiments/eNN-*/README.md` has the question, the prediction,
-how to run it and threats to validity. The owner runs the experiments; don't invent or "fill in" results.
-
-- **Predictions are frozen.** Never edit the `prediction` in `content/lab/eNN-*.md` or an experiment
-  README after the first run. Disagreements go under "What I learned".
-- **Raw data is kept** in `experiments/eNN-*/results/raw/`; summaries go in `data/lab/eNN/<stamp>.json`
-  with the shape `{ id, title, run_at, build?, tool, notes[], tables[{caption, columns[], rows[][]}] }`.
-  `layouts/partials/lab-run.html` renders any file of that shape, so new experiments need no template work.
-- **The origin IP never goes into a committed file.** Scripts take it from `ORIGIN_IP` and
-  `lib/results.mjs` redacts it from everything written.
-- **No heavy load through Cloudflare.** Capacity tests target the loopback listener on the droplet (E05).
-  Through the edge, stay at ~20 req/s (E06).
-- **No deploys during E04** (retention): a deploy purges the cache being measured. Commits made by the
-  lab workflow use GITHUB_TOKEN and don't trigger deploys, on purpose.
-- Lab page `status`: `planned` | `running` | `complete`. Hugo treats `weight: 0` as unset, so weights start at 1.
-- The Globalping response field names in `experiments/lib/globalping.mjs` are from memory of the v1 API
-  and were tested only against a mock. E00 prints a raw result; trust that over the code.
-- Known footer probe issues that E00 is designed to confirm (fix only after it has run): a reload within
-  60 s comes from the browser cache but still prints a "Time to first byte"; "Edge to origin" is the last
-  hop only (upper tier → droplet), not the reader's PoP → origin path.
+`experiments/` holds the performance-experiment design and scripts (`PLAN.md`, `run.mjs`, `eNN-*/`). The
+site used to render their results under `/lab/`; that section was removed in October 2026 and the
+scripts still write summaries to `data/lab/`, which nothing reads. The owner runs the experiments; don't
+invent or "fill in" results, and never edit a frozen `prediction`. The origin IP never goes into a
+committed file. No heavy load through Cloudflare (capacity tests target the loopback listener, E05).
 
 ## Design system
 
@@ -187,7 +173,7 @@ Tokens are at the top of `assets/css/main.css`. Use them and don't add new color
 
 - `hugo.toml`: `baseURL`, `title`/`author`, `email`, `github`, `originName`, `[params.giscus]` ids.
 - `deploy/nginx/site.conf`: `server_name`, `$origin_name`.
-- Content: home intro, about page, now table, first real research entry (rename `mi-wip.md`), starter post.
+- Content: the "Reading" row in `now.md`; home intro and about page are drafted from the CV and marked for a voice pass.
 - After first deploy, verify: whether `Server-Timing: cfL4` appears on HTML responses
   (`curl -sI https://<domain>/ | grep -i server-timing`); if not, the RTT cell uses the HTTP fallback,
   which is fine but the label must say so (it does).
