@@ -17,7 +17,7 @@ The second half is the sandbox. Every control experiment needs an isolated machi
 
 I know which side of the table I've chosen. Capabilities has a trend line and a business model; safety has neither, and it has to prove its worth to companies that would rather it didn't exist. I'm doing it anyway, partly because the one lever safety does have is that a private company eventually has to prove its product is reliable, and mostly because it's the side that matches what I believe. The field is also nearly unknown where I live. Mechanistic interpretability and AI safety have almost no footprint in Indonesia, and one of the things I want out of the write-ups on this site is a reason for peers here to look at them.
 
-Right now that means three things: the monitor work above, the harness, and BlueDot Impact's Technical AI Safety course, which I started in October 2026. The long version of the why, on Indonesia adopting AI faster than anywhere else and asking the fewest questions about it, is on Substack: [Adopt AI first, ask later](https://thareqyusuf.substack.com/p/adopt-ai-first-ask-later). The technical follow-up on control is the next piece.
+Right now that means three things: the monitor work above, the harness, and BlueDot Impact's Technical AI Safety course, which I started in October 2026. The long version of the why, on Indonesia adopting AI faster than anywhere else and asking the fewest questions about it, is [Adopt AI first, ask later](/blog/adopt-ai-first-ask-later/), also on [Substack](https://thareqyusuf.substack.com/p/adopt-ai-first-ask-later). The technical follow-up on control is the next piece.
 
 The full career story is in my [CV (PDF)](/cv.pdf). The short version:
 

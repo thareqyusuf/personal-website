@@ -4,7 +4,7 @@
 <title>{{ $title }}</title>
 {{- $desc := or .Description .Summary site.Params.description | plainify | truncate 180 }}
 <meta name="description" content="{{ $desc }}">
-<link rel="canonical" href="{{ .Permalink }}">
+<link rel="canonical" href="{{ .Params.canonical | default .Permalink }}">
 <meta name="color-scheme" content="light dark">
 <meta property="og:title" content="{{ $title }}">
 <meta property="og:description" content="{{ $desc }}">

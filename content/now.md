@@ -15,8 +15,8 @@ focus:
   - area: Learning
     what: "BlueDot Impact's Technical AI Safety course, October 2026 cohort"
   - area: Writing
-    what: "*Adopt AI first, ask later* is out on Substack; next, the technical piece on AI control"
-    link: https://thareqyusuf.substack.com/p/adopt-ai-first-ask-later
+    what: "*Adopt AI first, ask later* is out, here and on Substack; next, the technical piece on AI control"
+    link: /blog/adopt-ai-first-ask-later/
     status: done
   - area: Work
     what: "Cilium network policy and Falco/Tetragon runtime detection on a regulated gambling platform"
@@ -33,4 +33,4 @@ This page is a snapshot of what has my attention right now. It changes every mon
 
 **Learning.** BlueDot's cohort started on 26 October. First lesson learned had nothing to do with alignment: a month of writing made me able to think about this field, and none of it came out in the first live discussion. Prepping out loud from now on.
 
-**Writing.** [*Adopt AI first, ask later*](https://thareqyusuf.substack.com/p/adopt-ai-first-ask-later) went up on Substack on 24 October. Indonesia reports the highest workplace use of generative AI in the world and sits in the region that trusts most that it will be regulated well; I was part of that number for most of my career, and the essay is about why nobody here, including me, was ever required to ask why. It ends with one line about AI control and a promise that the next piece gets technical. That's the one I'm writing now.
+**Writing.** [*Adopt AI first, ask later*](/blog/adopt-ai-first-ask-later/) went up on 24 October, on [Substack](https://thareqyusuf.substack.com/p/adopt-ai-first-ask-later) first and now here. Indonesia reports the highest workplace use of generative AI in the world and sits in the region that trusts most that it will be regulated well; I was part of that number for most of my career, and the essay is about why nobody here, including me, was ever required to ask why. It ends with one line about AI control and a promise that the next piece gets technical. That's the one I'm writing now.
