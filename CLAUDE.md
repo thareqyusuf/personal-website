@@ -1,9 +1,17 @@
 # CLAUDE.md
 
 Personal site for a platform engineer (Kubernetes networking with eBPF, runtime security, GPU clusters)
-who also does mechanistic interpretability research. Biography and job history come from the owner's CV
+who is moving into AI safety, specifically AI control (trusted monitoring, control-evaluation sandboxes),
+with mechanistic interpretability as the tool. Biography and job history come from the owner's CV
 (`static/cv.pdf`, built from `~/Documents/cv/typst/out/cv-infra.pdf`); keep `about.md`, the home intro and
-`now.md` consistent with it. Static Hugo site, served by nginx on one VPS, with Cloudflare in front
+`now.md` consistent with it. The research direction, current focus and the owner's voice come from his
+LLM-maintained wiki at `~/Documents/personal-wiki` (start at `wiki/index.md`; the pages that matter here are
+`wiki/knowledge/ai-control/overview.md`, `wiki/knowledge/infra/overview.md`, `wiki/career/targets.md`,
+`wiki/ideas/i-bet-on-losing-dogs.md` and the latest `wiki/journal/YYYY-MM.md`). Only public-safe material
+crosses over: research stance, work, courses, writing in progress. Nothing about people, health, family or
+mood from the journal goes on the site. Voice: first person, plain, specific, committed; he states a
+position and the reason, in that order, and keeps his own metaphors (the losing side, the load-bearing
+claim, the diary) rather than generic phrasing. Static Hugo site, served by nginx on one VPS, with Cloudflare in front
 as the edge cache. Its signature feature is a **live probe panel** in the footer of every page that
 measures how that page reached the reader. Design is brutalist: hard 2px rules, a bordered sheet
 on a cool grey page, one loud ultramarine band (the probe), no decoration that isn't information.
@@ -173,7 +181,7 @@ Tokens are at the top of `assets/css/main.css`. Use them and don't add new color
 
 - `hugo.toml`: `baseURL`, `title`/`author`, `email`, `github`, `originName`, `[params.giscus]` ids.
 - `deploy/nginx/site.conf`: `server_name`, `$origin_name`.
-- Content: home intro and about page are drafted from the CV and marked for a voice pass.
+- Content: home intro, about and now had their voice pass on 2026-10-29 from the wiki. Refresh `now.md` from the latest wiki journal synthesis roughly monthly.
 - After first deploy, verify: whether `Server-Timing: cfL4` appears on HTML responses
   (`curl -sI https://<domain>/ | grep -i server-timing`); if not, the RTT cell uses the HTTP fallback,
   which is fine but the label must say so (it does).

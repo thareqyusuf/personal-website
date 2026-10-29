@@ -33,7 +33,7 @@ ignoreLogs      = ['warning-goldmark-raw-html']   # TODO markers are HTML commen
 
 [params]
   author      = "Thareq Yusuf"           # TODO
-  description = "Platform engineer. Kubernetes networking with eBPF, runtime security, GPU clusters, and lately the insides of language models."
+  description = "Platform engineer in Jakarta. Kubernetes networking with eBPF, runtime security, GPU clusters, and AI control: keeping watch over models we can't yet verify."
   timezone    = "Asia/Jakarta"           # drives the clock widget; IANA name
   tzLabel     = "WIB"
   # Shown as a base64 block on /about so scrapers have to work for it.
