@@ -9,7 +9,8 @@ Every feed carries full posts, so you can read without visiting. Paste any of th
 |---|---|---|
 | Everything | Posts and research log entries | [`/index.xml`](/index.xml) |
 | Writing | Essays and technical posts | [`/blog/index.xml`](/blog/index.xml) |
-| Research log | Mechanistic interpretability work in progress | [`/research/index.xml`](/research/index.xml) |
+| Research log | AI control and interpretability work in progress | [`/research/index.xml`](/research/index.xml) |
+| Substack | Longer essays, starting with *Adopt AI first, ask later* | [`thareqyusuf.substack.com/feed`](https://thareqyusuf.substack.com/feed) |
 
 Research items are prefixed with their status, such as `[Research, wip]`, so you can tell a finished result from a lab note at a glance.
 

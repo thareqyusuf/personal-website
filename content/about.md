@@ -17,7 +17,7 @@ The second half is the sandbox. Every control experiment needs an isolated machi
 
 I know which side of the table I've chosen. Capabilities has a trend line and a business model; safety has neither, and it has to prove its worth to companies that would rather it didn't exist. I'm doing it anyway, partly because the one lever safety does have is that a private company eventually has to prove its product is reliable, and mostly because it's the side that matches what I believe. The field is also nearly unknown where I live. Mechanistic interpretability and AI safety have almost no footprint in Indonesia, and one of the things I want out of the write-ups on this site is a reason for peers here to look at them.
 
-Right now that means three things: the monitor work above, the harness, and BlueDot Impact's Technical AI Safety course, which I started in October 2026. A long essay on why Indonesia adopts AI faster than anywhere else and asks the fewest questions about it, and why that pushed me into this field, is in progress and will land under [Writing](/blog/).
+Right now that means three things: the monitor work above, the harness, and BlueDot Impact's Technical AI Safety course, which I started in October 2026. The long version of the why, on Indonesia adopting AI faster than anywhere else and asking the fewest questions about it, is on Substack: [Adopt AI first, ask later](https://thareqyusuf.substack.com/p/adopt-ai-first-ask-later). The technical follow-up on control is the next piece.
 
 The full career story is in my [CV (PDF)](/cv.pdf). The short version:
 
@@ -42,6 +42,7 @@ The full career story is in my [CV (PDF)](/cv.pdf). The short version:
 
 - **RSS:** [everything](/index.xml), or just [writing](/blog/index.xml) or the [research log](/research/index.xml). Feeds carry the full text.
 - **GitHub:** I'm [@thareqyusuf](https://github.com/thareqyusuf). Comments on posts are GitHub Discussions, so replying there works too.
+- **Substack:** longer essays go out at [thareqyusuf.substack.com](https://thareqyusuf.substack.com/). The first one is the why behind everything above.
 - **CV:** [thareq-yusuf-cv.pdf](/cv.pdf).
 - **Email:** I read everything and answer slowly. The addresses are below; decoding them is the spam filter. If you work on control, monitoring or sandboxing anywhere near Southeast Asia, I especially want to hear from you.
 
