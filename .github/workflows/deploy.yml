@@ -33,6 +33,7 @@ jobs:
 
       - name: Check (feeds, budgets, nginx rules)
         run: |
+          sudo apt-get update -q >/dev/null
           sudo apt-get install -y -q nginx-light libxml2-utils >/dev/null
           ./scripts/check.sh public
 
