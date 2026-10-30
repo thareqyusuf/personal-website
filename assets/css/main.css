@@ -243,6 +243,49 @@ table.focus th { width: 11rem; font-weight: 650; border-right: var(--hair); }
 .prose thead th { background: var(--ink); color: var(--sheet); font-weight: 650; border-color: var(--ink); }
 .prose hr { border: 0; border-top: var(--rule); margin: 2.5em 0; }
 
+/* Footnotes: Hugo's markup. The ref is a small bold number; the list sits under a rule. */
+.prose sup { font-size: .72em; line-height: 0; vertical-align: .5em; }
+.footnote-ref { text-decoration: none; font-weight: 650; padding: 0 .1em; }
+.footnotes { font-size: .92rem; }
+.footnotes ol { padding-left: 1.6em; }
+.footnotes li + li { margin-top: .6em; }
+.footnotes li > p { margin: .35em 0; }
+.footnote-backref { text-decoration: none; margin-left: .25em; }
+
+/* Annotated external links: dotted underline means "there is a note on this in the bibliography". */
+.prose a[data-ann] { text-decoration-style: dotted; }
+
+/* Link bibliography: every annotated external link on the page. Visible without JS. */
+.bib { border-top: var(--rule); padding: 0 var(--gutter); }
+.bib summary { padding: .9rem 0; font-weight: 650; cursor: pointer; }
+.bib summary:hover { background: var(--signal); color: var(--signal-ink); }
+.bib ol { margin: 0 0 1.2rem; padding-left: 1.6em; max-width: var(--measure); font-size: .92rem; }
+.bib li + li { margin-top: .7em; }
+.bib li p { margin: .35em 0 0; }
+.bib-meta, .pv-meta { display: block; color: var(--muted); }
+
+/* Preview 1.0: the box a footnote, page or reference opens in. A bordered sheet, no shadow, no motion. */
+.pv {
+  position: absolute; z-index: 5;
+  width: min(34rem, calc(100vw - 32px));
+  background: var(--sheet); color: var(--ink); border: var(--rule);
+  font-size: .92rem; line-height: 1.5; font-stretch: 100%;
+}
+.pv-head {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+  padding: .4rem .8rem; border-bottom: var(--hair);
+  font-size: .78rem; font-weight: 600;
+}
+.pv-body { padding: .7rem .8rem; max-height: 55vh; overflow-y: auto; overflow-wrap: anywhere; }
+.pv-body > :first-child, .pv-body li > p:first-child { margin-top: 0; }
+.pv-body > :last-child { margin-bottom: 0; }
+.pv-body h2, .pv-body h3 { font-size: 1.05rem; margin: 0 0 .4em; }
+.pv-body p { margin: .6em 0; }
+.pv-close { border: 0; padding: 0; background: none; color: inherit; font: inherit; font-weight: 600; cursor: pointer; text-decoration: underline; text-decoration-color: var(--signal); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.pv-close:hover { background: var(--signal); color: var(--signal-ink); }
+.pv-in { position: static; width: auto; max-width: var(--measure); margin: .7em 0; }
+li > .pv-in { margin-top: .5em; }
+
 /* Chroma (Hugo highlighting) – ink, muted and signal only */
 .chroma .c, .chroma .c1, .chroma .cm, .chroma .cs { color: var(--muted); font-style: italic; }
 .chroma .k, .chroma .kd, .chroma .kn, .chroma .kr, .chroma .nt { font-weight: 700; }

@@ -1,0 +1,18 @@
+{{- /* Link bibliography: every external link on this page that has an entry in data/annotations.yaml.
+       Visible without JS; the preview popup clones these entries. Needs .Content rendered first. */ -}}
+{{- with .Store.Get "ann" }}
+<details class="bib" id="links">
+  <summary>Links in this {{ if eq $.Section "research" }}entry{{ else }}page{{ end }} ({{ len . }}), in order of appearance</summary>
+  <ol>
+  {{- range $.Store.Get "annOrder" }}{{ with index ($.Store.Get "ann") . }}
+    {{- $a := .ann }}
+    <li id="ann-{{ .id }}">
+      <a href="{{ .url }}">{{ $a.title | default .url }}</a>
+      {{- $meta := slice }}{{ with $a.author }}{{ $meta = $meta | append . }}{{ end }}{{ with $a.venue }}{{ $meta = $meta | append . }}{{ end }}{{ with $a.date }}{{ $meta = $meta | append . }}{{ end }}
+      {{- with $meta }}<span class="bib-meta">{{ delimit . ", " }}</span>{{ end }}
+      {{- with $a.note }}<div class="bib-note">{{ . | markdownify }}</div>{{ end }}
+    </li>
+  {{- end }}{{ end }}
+  </ol>
+</details>
+{{- end }}

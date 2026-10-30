@@ -38,3 +38,16 @@ The panel at the bottom of each page measures the request that delivered it. [Th
 | Time to first byte | Navigation Timing, `responseStart − requestStart` | ms |
 | Protocol | `nextHopProtocol`, plus `tls=` from the trace | — |
 | Edge cache | `cf-cache-status` and `age` from a `HEAD` request for this URL | — |
+
+## Previews {#previews}
+
+Footnote numbers, links to other pages here, and cited links with a dotted underline open a small box when you hover or tab onto them. That is `Preview 1.0`, the second instrument on the site, and it works like this:
+
+| Link | What the box shows | Where it comes from |
+|---|---|---|
+| Footnote number | The footnote | Already on the page; nothing is fetched |
+| Page on this site | Title, date or status, one-line description. With a `#section` anchor, that section | The summary is written into the link at build time. A section is fetched from this origin and cut out of the page |
+| Dotted external link | Title, author, source, date, and my note if I wrote one | `data/annotations.yaml` in the repo, rendered as the **Links in this page** list at the end of the page |
+| `#anchor` on the same page | That section | Already on the page |
+
+On touch screens and windows narrower than 720 px there is no hover, so footnotes and cited links expand inline under their paragraph instead, with a Close button, and page links just navigate. Nothing leaves this origin: no external page is fetched, and nothing is prefetched until you hover. Without JavaScript, footnote numbers jump to the footnote and the links list at the end of the page holds every note. The idea and the name come from [gwern.net's link popups](https://gwern.net/design); this is the small version of it.

@@ -28,6 +28,7 @@
   <div class="prose">
     {{ .Content }}
   </div>
+  {{ partial "links-bib.html" . }}
   <p class="follow">New log entries go out on the <a href="/research/index.xml">research RSS feed</a>.</p>
   {{ partial "comments.html" . }}
 </article>

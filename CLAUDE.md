@@ -42,16 +42,19 @@ content/
   about.md now.md colophon.md subscribe.md
   blog/                    posts; URL = /blog/<filename>/
   research/                MI research log entries; URL = /research/<filename>/
+data/annotations.yaml      reference notes for external links, keyed by exact URL (title, author, venue, date, note)
 layouts/
+  _default/_markup/render-link.html  link hook: data-pv-* on internal links, data-ann on annotated external links
   _default/baseof.html     page shell
   _default/single.html     posts + plain pages;   research/single.html  research entries
   _default/list.html       section lists;         _default/now.html     /now page
   _default/rss.xml         full-content RSS (home = blog + research; sections = their own)
   index.html               home: hero, clock + Game of Life tools, now table, writing, research
-  partials/                head, header, footer (probe markup), comments (giscus), entry, status, focus-table
+  partials/                head, header, footer (probe markup), comments (giscus), entry, status, focus-table,
+                           links-bib (the "Links in this page" list, built from .Store filled by the link hook)
   shortcodes/b64.html      base64-encoded email with a Decode button
 assets/css/main.css        all styles; tokens at the top
-assets/js/site.js          probe, clock, life, b64. No deps. Bundled by js.Build
+assets/js/site.js          probe, clock, life, b64, preview (Preview 1.0 popups). No deps. Bundled by js.Build
 static/fonts/              Archivo (variable, wght+wdth) and Fragment Mono, versioned file names
 deploy/
   nginx/site.conf          production server blocks (TLS, mTLS from Cloudflare, real_ip)
@@ -110,6 +113,20 @@ label in `footer.html`, the note set in `site.js`, `content/colophon.md` (#probe
 Rules for `site.js`: measure only after `load`; every fetch must fail soft (cell shows `—` plus a
 reason); no timers faster than the Game of Life's 160 ms; respect `prefers-reduced-motion`
 (life renders one still frame); pause life when off-screen or the tab is hidden. Budget: JS ≤ 12 kB.
+
+## Previews (Preview 1.0)
+
+Gwern-style link popups, kept small. `render-link.html` resolves internal links at build time and stamps
+`data-pv-title/desc/meta`; external links whose exact URL is a key in `data/annotations.yaml` get
+`data-ann=<id>` and a row in the `links-bib.html` list at the end of the page (the no-JS fallback).
+`preview()` in `site.js` opens a bordered box on hover (350 ms) or focus for footnote refs, `data-pv-*`
+links (a `#section` anchor fetches the same-origin page and cuts out that section), `data-ann` links
+(clones the bibliography row) and same-page `#anchor`s. Below 720 px or without hover, footnotes and
+references expand inline (`.pv-in`) with a Close button and page links just navigate. Rules: fetch this
+origin only, fail soft to the summary, no motion, one box at a time, Escape closes and returns focus.
+When adding an annotation, use the exact URL from the markdown; titles you have not checked get a
+`# TODO` comment (check.sh now scans `data/` for TODO). The colophon's #previews table must stay true
+to this behaviour.
 
 ## Caching contract
 

@@ -13,6 +13,7 @@
   <div class="prose">
     {{ .Content }}
   </div>
+  {{ partial "links-bib.html" . }}
   {{- if eq .Section "blog" }}
   <p class="follow">If this was useful, the <a href="/blog/index.xml">RSS feed</a> is the best way to get the next one.</p>
   {{ partial "comments.html" . }}

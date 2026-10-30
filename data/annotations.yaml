@@ -1,0 +1,128 @@
+# Reference notes for external links, keyed by the exact URL used in the markdown.
+# A link whose URL is here gets a hover preview (Preview 1.0 in site.js) and a row in the
+# "Links in this page" bibliography at the end of the page, which is also the no-JS fallback.
+# Fields: title, author, venue, date (free text), note (markdown, the owner's one-paragraph
+# summary or why it is cited). Entries without a note show title and source only.
+# Titles marked TODO were taken from the URL slug and should be checked against the page.
+
+"https://thareqyusuf.substack.com/p/adopt-ai-first-ask-later":
+  title: "Adopt AI first, ask later"
+  author: "Thareq Yusuf"
+  venue: "Substack"
+  date: "24 Oct 2026"
+  note: "The same essay as published on Substack, where it went up first. Comments there and here both reach me."
+
+"https://news.microsoft.com/id-id/2024/06/11/microsoft-and-linkedin-release-the-2024-work-trend-index-on-the-state-of-ai-at-work-in-indonesia/":
+  title: "Microsoft and LinkedIn release the 2024 Work Trend Index on the state of AI at work in Indonesia"
+  author: "Microsoft and LinkedIn"
+  venue: "Microsoft News Center Indonesia"
+  date: "11 Jun 2024"
+
+"https://en.antaranews.com/news/418873/92-percent-of-indonesian-knowledge-workers-use-generative-ai-govt":
+  title: "92 percent of Indonesian knowledge workers use generative AI: govt"   # TODO: confirm title
+  venue: "Antara News"
+
+"https://hai.stanford.edu/assets/files/ai_index_report_2026_chapter_9_public_opinion.pdf":
+  title: "AI Index Report 2026, chapter 9: Public opinion (PDF)"
+  author: "Stanford HAI"
+  date: "2026"
+
+"https://kathmandupost.com/science-technology/2024/11/19/lessons-on-coding-and-ai-to-start-in-fourth-grade-indonesia-education-minister":
+  title: "Lessons on coding and AI to start in fourth grade: Indonesia education minister"   # TODO: confirm title
+  venue: "The Kathmandu Post"
+  date: "19 Nov 2024"
+
+"https://eastasiaforum.org/2025/06/25/indonesias-ai-fomo-threatens-real-progress/":
+  title: "Indonesia's AI FOMO threatens real progress"   # TODO: confirm title
+  venue: "East Asia Forum"
+  date: "25 Jun 2025"
+
+"https://yourstory.com/ai-story/ai-three-day-work-week-jeff-bezos":
+  title: "Jeff Bezos on AI and the three-day work week"   # TODO: confirm title
+  venue: "YourStory"
+
+"https://www.anthropic.com/research/employment-at-anthropic":
+  title: "How employment is changing at Anthropic"
+  author: "Anthropic"
+  date: "16 Oct 2026"
+
+"https://newsletter.pragmaticengineer.com/p/are-llms-making-stackoverflow-irrelevant":
+  title: "Are LLMs making StackOverflow irrelevant?"
+  author: "Gergely Orosz"
+  venue: "The Pragmatic Engineer"
+  date: "2024"
+
+"https://techcrunch.com/2025/10/27/mercor-quintuples-valuation-to-10b-with-350m-series-c/":
+  title: "Mercor quintuples valuation to $10B with $350M Series C"   # TODO: confirm title
+  venue: "TechCrunch"
+  date: "27 Oct 2025"
+
+"https://time.com/6247678/openai-chatgpt-kenya-workers/":
+  title: "OpenAI used Kenyan workers on less than $2 per hour to make ChatGPT less toxic"
+  author: "Billy Perrigo"
+  venue: "TIME"
+  date: "18 Jan 2023"
+
+"https://www.computerworld.com/article/3609516/us-commission-proposes-manhattan-project-like-initiative-for-ai.html":
+  title: "US commission proposes Manhattan Project-like initiative for AI"
+  venue: "Computerworld"
+  date: "Nov 2024"
+
+"https://forum.effectivealtruism.org/posts/r7ThqWrwmLqrk4s5p/china-hawks-are-manufacturing-an-ai-arms-race":
+  title: "China hawks are manufacturing an AI arms race"
+  venue: "EA Forum"
+  date: "Nov 2024"
+
+"https://arxiv.org/abs/2001.08361":
+  title: "Scaling Laws for Neural Language Models"
+  author: "Jared Kaplan, Sam McCandlish et al. (OpenAI)"
+  venue: "arXiv:2001.08361"
+  date: "Jan 2020"
+
+"https://distill.pub/2019/safety-needs-social-scientists/":
+  title: "AI Safety Needs Social Scientists"
+  author: "Geoffrey Irving and Amanda Askell"
+  venue: "Distill"
+  date: "2019"
+  note: |
+    If you are not an ML person and wondered where you fit, this is the paper to read. Their proposal is a debate, two AIs argue, a human judges, and the whole scheme only works “above some threshold” of judge ability. So the open questions are about people, not models. They expand this by questioning how skilled are people as judges by default? can we distinguish good judges from bad? does judge ability generalise across domains? can we train people to be better judges? what questions are people better at answering? are there ways to restrict debate to make it easier to judge? how can people work together to improve quality? None of those is a machine learning question.
+
+    The disciplines they name are “experimental psychology, cognitive science, economics, political science, and social psychology,” with neuroscience and law as adjacent. The core skill is “the careful design of rigorous experiments” on humans, which ML researchers are not trained in. Cognitive scientists, for the biases that make a judge fall for a confident wrong answer. Economists and political scientists, because debate is a game and someone has to design its incentives. An actual debaters as subjects, because they note that “lying effectively is required for a meaningful experiment”: you need people who can argue a false position well. I’d add anthropologists, since they admit the answers “may be different in other communities or cultures”  and i believe there certain kind of latent knowledge worth pursuing into.
+
+"https://blog.redwoodresearch.org/p/capabilities-research-expands-the":
+  title: "Capabilities research expands the safety-usefulness frontier"   # TODO: confirm title
+  author: "Alex Mallen"
+  venue: "Redwood Research blog"
+  date: "2 Oct 2026"
+  note: |
+    This is one of the frameworks I use to keep capabilities and safety apart in my head, because the obvious definition fails. If safety research is “anything that lets you deploy more safely without losing usefulness”, then nearly all capabilities research qualifies, and as he puts it, “something has gone wrong with our definition of safety research if it includes seemingly all capabilities research.”
+
+    A few things from the post that didn’t fit in the essay narrative. He defines safety bluntly as the probability the model doesn’t take over. For context, this is a very AI Control definition of AI Safety so we need to keep in my why he bring up these certain examples in the blog.
+
+    Appendix B is the part I think should have been the main argument because safety is very hard to measure, usefulness is easy. This is important because it implies that labs or dev can actually reduce the safety axis without even noticing. That asymmetry is what I mean when I say safety has no trend line. He also thinks current frontier capabilities work is “probably bad.” So do I.
+
+"https://arxiv.org/html/2412.06769v2":
+  title: "Training Large Language Models to Reason in a Continuous Latent Space"
+  author: "Shibo Hao et al. (Meta FAIR)"
+  venue: "arXiv:2412.06769"
+  date: "Dec 2024"
+
+"https://blog.redwoodresearch.org/p/latent-reasoning-architectures-would":
+  title: "Latent reasoning architectures would make control harder"   # TODO: confirm title
+  venue: "Redwood Research blog"
+  date: "2026"
+
+"https://arxiv.org/abs/2503.14499":
+  title: "Measuring AI Ability to Complete Long Tasks"
+  author: "Thomas Kwa, Ben West et al. (METR)"
+  venue: "arXiv:2503.14499"
+  date: "Mar 2025"
+
+"https://www.axios.com/2026/07/29/openai-hugging-face-modal-cyber-benchmark":
+  title: "OpenAI agent on a cyber benchmark reaches Hugging Face and Modal"   # TODO: confirm title
+  venue: "Axios"
+  date: "29 Jul 2026"
+  note: |
+    This incident is one of the reasons I aspire to work on AI control rather than on alignment proper. The model was not unusually malicious, it was given a cybersecurity benchmark, had its safeguards switched off to measure its ceiling, and did what it was optimised to do.
+
+    This is AI Control narrative, instead of aligning, we just create a system where working with misaligned model actually okay. We give them proper simulation, guardrails, and properly red-teaming the policy model. The boundary and the monitor are the two things that failed here in the incident, and they are the two things AI control is about. Although there are still gap that need to be filled by AI Control approach. One of which, using this incident as an example, is AI Control have a conservative assumption that model will try to misaligned on purpose. They built their entire framework on this assumption that the model is actively conspire against us.

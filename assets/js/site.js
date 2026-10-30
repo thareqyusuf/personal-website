@@ -256,11 +256,134 @@ function b64() {
   });
 }
 
+/* --------------------------------------------------------------- preview */
+// Preview 1.0. Footnotes, pages on this site and annotated references open in a bordered
+// box next to the link on hover or keyboard focus. On touch screens and narrow windows,
+// footnotes and references expand inline under their paragraph instead, and page links
+// just navigate. Pages are fetched from this origin only and cut to the linked section.
+// Nothing here is needed to read the page: without JS, footnotes jump and the
+// bibliography at the end of the page holds every note.
+
+function preview() {
+  const root = document.querySelector("main");
+  if (!root) return;
+  const SEL = "a.footnote-ref, a[data-pv-title], a[data-ann], a[href^='#']:not(.footnote-backref)";
+  const HEAD = /^H[1-6]$/;
+  const pages = new Map();
+  let box = null, owner = null, timer = 0;
+
+  const el = (tag, cls, html) => { const e = document.createElement(tag); e.className = cls; if (html != null) e.innerHTML = html; return e; };
+  const esc = (s) => { const d = document.createElement("i"); d.textContent = s; return d.innerHTML; };
+  const narrow = () => matchMedia("(hover: none), (max-width: 720px)").matches;
+  const later = (fn, ms = 250) => { clearTimeout(timer); timer = setTimeout(fn, ms); };
+
+  // A heading plus everything up to the next heading of the same or a higher level.
+  const section = (doc, id) => {
+    const h = doc.getElementById(id);
+    if (!h) return null;
+    if (!HEAD.test(h.tagName)) return h.outerHTML;
+    let html = h.outerHTML;
+    for (let n = h.nextElementSibling; n && !(HEAD.test(n.tagName) && n.tagName <= h.tagName); n = n.nextElementSibling) html += n.outerHTML;
+    return html;
+  };
+  const page = (path) => {
+    if (!pages.has(path)) {
+      pages.set(path, fetch(path, { credentials: "omit" })
+        .then((r) => (r.ok ? r.text() : Promise.reject(r.status)))
+        .then((t) => new DOMParser().parseFromString(t, "text/html")));
+    }
+    return pages.get(path);
+  };
+
+  // What the box shows for a link: { kind, html }, or null when there is nothing to show.
+  async function fill(a) {
+    const id = decodeURIComponent(a.hash.slice(1));
+    const d = a.dataset;
+    if (a.classList.contains("footnote-ref")) {
+      const li = document.getElementById(id);
+      if (!li) return null;
+      const c = li.cloneNode(true);
+      c.querySelectorAll(".footnote-backref").forEach((e) => e.remove());
+      return { kind: `Footnote ${a.textContent}`, html: c.innerHTML };
+    }
+    if (d.ann) {
+      const li = document.getElementById(`ann-${d.ann}`);
+      return li ? { kind: "Reference", html: li.innerHTML } : null;
+    }
+    if (d.pvTitle !== undefined) {
+      let html = `<p><strong>${esc(d.pvTitle)}</strong>${d.pvMeta ? `<span class="pv-meta">${esc(d.pvMeta)}</span>` : ""}</p>`
+        + (d.pvDesc ? `<p>${esc(d.pvDesc)}</p>` : "");
+      if (id) { try { html = section(await page(a.pathname), id) || html; } catch { /* summary is enough */ } }
+      return { kind: "On this site", html };
+    }
+    const s = id && section(document, id);
+    return s ? { kind: "On this page", html: s } : null;
+  }
+
+  function close() {
+    clearTimeout(timer);
+    if (box) { box.remove(); box = null; }
+    if (owner) { owner.removeAttribute("aria-describedby"); owner = null; }
+  }
+  function place(a) {
+    const r = a.getBoundingClientRect(), w = box.offsetWidth, h = box.offsetHeight;
+    const x = Math.max(16, Math.min(r.left, document.documentElement.clientWidth - w - 16));
+    const below = r.bottom + 8 + h <= innerHeight || r.top < h + 8;
+    box.style.left = `${x + scrollX}px`;
+    box.style.top = `${(below ? r.bottom + 8 : r.top - 8 - h) + scrollY}px`;
+  }
+  async function open(a, inline) {
+    close();
+    owner = a;
+    const f = await fill(a).catch(() => null);
+    if (owner !== a) return;
+    if (!f) { owner = null; return; }
+    box = el("aside", inline ? "pv pv-in" : "pv");
+    box.id = "pv";
+    const head = el("div", "pv-head", `<span>${esc(f.kind)}</span>`);
+    const body = el("div", "pv-body", f.html);
+    body.querySelectorAll("[id]").forEach((e) => e.removeAttribute("id"));
+    box.append(head, body);
+    if (inline) {
+      const btn = el("button", "pv-close", "Close");
+      btn.type = "button";
+      btn.addEventListener("click", () => { close(); a.focus(); });
+      head.append(btn);
+      const blk = a.closest("p, li, dd, h2, h3, h4");
+      if (!blk) a.after(box); else if (blk.tagName === "LI") blk.append(box); else blk.after(box);
+    } else {
+      box.addEventListener("mouseenter", () => clearTimeout(timer));
+      box.addEventListener("mouseleave", () => later(close));
+      box.addEventListener("focusin", () => clearTimeout(timer));
+      box.addEventListener("focusout", (e) => { if (!box.contains(e.relatedTarget)) later(close); });
+      document.body.append(box);
+      place(a);
+    }
+    a.setAttribute("aria-describedby", "pv");
+  }
+
+  root.querySelectorAll(SEL).forEach((a) => {
+    a.addEventListener("mouseenter", () => { if (!narrow()) later(() => open(a, false), 350); });
+    a.addEventListener("mouseleave", () => later(close));
+    a.addEventListener("focus", () => { if (!narrow()) open(a, false); });
+    a.addEventListener("blur", () => later(close));
+    a.addEventListener("click", (e) => {
+      if (!narrow() || !(a.classList.contains("footnote-ref") || a.dataset.ann)) return;
+      e.preventDefault();
+      if (owner === a) close(); else open(a, true);
+    });
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && box) { const a = owner; close(); a.focus(); }
+  });
+}
+
 /* ------------------------------------------------------------------ boot */
 
 clock();
 life();
 b64();
+preview();
 // Measure after load so the probe doesn't compete with the page it's measuring.
 if (document.readyState === "complete") probe();
 else addEventListener("load", () => setTimeout(probe, 50), { once: true });

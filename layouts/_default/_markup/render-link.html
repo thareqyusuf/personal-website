@@ -1,0 +1,30 @@
+{{- /*
+  Link render hook. Adds the data the preview instrument (site.js, `preview()`) needs:
+
+  - Internal page links (/blog/x/, /research/x/, /now/, …) get data-pv-* with the target's
+    title, one-line description and date/status, resolved at build time. No fetch needed.
+  - External links listed in data/annotations.yaml get data-ann="<id>" and the entry is
+    collected in .Page.Store so partials/links-bib.html can render it at the end of the page.
+    The bibliography is the no-JS fallback; the popup just clones it.
+  Everything else renders as a plain link.
+*/ -}}
+{{- $dest := .Destination -}}
+{{- $attrs := "" -}}
+{{- if hasPrefix $dest "/" -}}
+  {{- $path := index (split $dest "#") 0 -}}
+  {{- with site.GetPage (strings.TrimSuffix "/" $path) -}}
+    {{- $meta := "" -}}
+    {{- if and .IsPage (eq .Section "blog") }}{{ $meta = .Date.Format "2 Jan 2006" }}
+    {{- else if and .IsPage (eq .Section "research") }}{{ $meta = printf "Research, %s. Last entry %s" (.Params.status | default "wip") (.Lastmod.Format "2 Jan 2006") }}
+    {{- else if .Params.date }}{{ $meta = printf "Updated %s" (.Date.Format "2 Jan 2006") }}{{ end -}}
+    {{- $attrs = printf ` data-pv-title="%s" data-pv-desc="%s" data-pv-meta="%s"` (.Title | htmlEscape) (.Description | plainify | htmlEscape) ($meta | htmlEscape) -}}
+  {{- end -}}
+{{- else if hasPrefix $dest "http" -}}
+  {{- with index site.Data.annotations $dest -}}
+    {{- $id := substr (md5 $dest) 0 8 -}}
+    {{- $.Page.Store.SetInMap "ann" $id (dict "id" $id "url" $dest "ann" .) -}}
+    {{- if not (in ($.Page.Store.Get "annOrder") $id) }}{{ $.Page.Store.Add "annOrder" (slice $id) }}{{ end -}}
+    {{- $attrs = printf ` data-ann="%s"` $id -}}
+  {{- end -}}
+{{- end -}}
+<a href="{{ $dest | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}{{ $attrs | safeHTMLAttr }}>{{ .Text | safeHTML }}</a>

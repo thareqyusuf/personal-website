@@ -36,7 +36,7 @@ missing=$(grep -rLE 'class="?probe[" >]' "$PUB" --include='*.html' | grep -v '/4
 [ -z "$missing" ] && say ok "probe footer on every page" || { say FAIL "no probe in: $missing"; fail=1; }
 
 # 5. Unfinished placeholders (warn only; they're expected until you fill them in).
-todo=$(grep -rlE 'TODO|example\.com' content hugo.toml 2>/dev/null | tr '\n' ' ' || true)
+todo=$(grep -rlE 'TODO|example\.com' content data hugo.toml 2>/dev/null | tr '\n' ' ' || true)
 [ -z "$todo" ] && say ok "no TODO placeholders" || say warn "placeholders left in: $todo"
 
 # 6. nginx accepts the location rules (only if nginx is installed).
