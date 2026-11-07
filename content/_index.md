@@ -1,4 +1,6 @@
 ---
 title: "Home"
 ---
-Platform engineer in Jakarta, working remotely for teams in Tallinn, Singapore and Copenhagen. By day I run the parts of a Kubernetes platform under the containers: the network datapath (Cilium and eBPF, a CNI plugin in Go, `tc` shaping), runtime security with Falco and Tetragon, GPU scheduling for research clusters, and the databases underneath. The rest of the time goes to AI control: how you keep watch over a model you can't yet verify, and how you build the sandbox that experiment needs. Both start with napkin math.
+I'm a platform engineer, working remotely for teams in Estonia, Singapore and Denmark. Most of my hours go into debugging Kubernetes infrastructure: the network datapath (Cilium, eBPF, or plain `tc` flower), runtime security (Falco, Tetragon), tracing with OpenTelemetry, GPU scheduling for research clusters, and a fast-reset sandbox (Firecracker microVMs). My interest in computer science started with opening up kernel traces to understand how a program works underneath: a deterministic model of operation.
+
+That is the contrast with my current interest, mechanistic interpretability: even with a model's internals open in front of us, we still can't model how it behaves. My focus is AI safety, specifically AI control, understanding adversarial model behaviour along a multi-level attack trajectory.

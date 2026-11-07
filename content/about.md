@@ -3,9 +3,9 @@ title: "About"
 description: "Who I am, what I'm working toward, and how to reach me."
 ---
 
-I'm a platform engineer in Jakarta. I work remotely for teams in Estonia, Singapore and Denmark, and most of my hours go into the parts of a Kubernetes platform that nobody notices until they fail: the network datapath (Cilium and eBPF, a CNI plugin I wrote in Go, `tc` shaping), runtime security (Falco, Tetragon), GPU scheduling for research clusters, and the databases underneath. I like problems where the answer starts with a back-of-the-envelope number and ends with a flame graph or an `ss -ti` dump.
+I'm a platform engineer, working remotely for teams in Estonia, Singapore and Denmark. Most of my hours go into debugging Kubernetes infrastructure: the network datapath (Cilium, eBPF, or plain `tc` flower), runtime security (Falco, Tetragon), tracing with OpenTelemetry, GPU scheduling for research clusters, and a fast-reset sandbox (Firecracker microVMs). My interest in computer science started with opening up kernel traces to understand how a program works underneath: a deterministic model of operation.
 
-The rest of my time goes to AI safety, and inside it to AI control. This page says why, because the why is most of what I'd want you to know.
+That is the contrast with my current interest, mechanistic interpretability: even with a model's internals open in front of us, we still can't model how it behaves. My focus is AI safety, specifically AI control, understanding adversarial model behaviour along a multi-level attack trajectory.
 
 ## What I'm working toward
 
