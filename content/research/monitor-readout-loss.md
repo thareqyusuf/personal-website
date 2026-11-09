@@ -3,9 +3,9 @@ title: "What a weak monitor knows but doesn't say"
 date: 2026-09-10          # project start
 lastmod: 2026-10-08       # date of the newest log entry; bump it with each entry
 status: wip               # wip | paused | done
-description: "Measuring how much attack signal an open-weight LLM monitor throws away when it writes down a single suspicion score, on LinuxArena."
+description: "Measure how score verdict is influenced by actual attack signal from an open weight monitor internal and how unreliable it is when it was distilled into a single suspicious score, on LinuxArena."
 question: "Does a weak trusted monitor (gpt-oss-20b scoring every action of a stronger agent 0–10) know more about an attack than the integer it emits, and can that signal be read back out cheaply, from the digit distribution, the residual stream, or the chain of thought?"
-setup: "LinuxArena agent-control benchmark via its public mirror (17,234 actions, 92 attack trajectories). gpt-oss-20b in MXFP4 as the live monitor on a 2,012-action subset, residuals captured at 7 positions × 25 layers. Linear probes, nine baselines, trajectory-cluster bootstrap. One 32 GB GPU on Runpod; everything else on a laptop."
+setup: "LinuxArena agent-control benchmark via its public mirror (17,234 actions, 92 attack trajectories). gpt-oss-20b in MXFP4 as the live monitor on a 2,012-action subset, residuals captured at 7 positions × 25 layers. Linear probes, nine baselines, trajectory-cluster bootstrap."
 links:
   - label: "Code, raw results and figures (GitHub)"
     url: "https://github.com/thareqyusuf/linuxarena-monitor-readout"
@@ -15,11 +15,13 @@ links:
 
 ## Why this question
 
-The control protocol I care about is trusted monitoring: a weak model you trust reads every action a strong model takes and scores it. Actions above a threshold go to a human. The threshold is not set by accuracy. It is set by an audit budget, because a person can only afford to read a fixed fraction of honest actions, so you place the cutoff at the honest 95th or 99th percentile and ask how many attacks clear it.
+Trusted monitoring, where a weak model we trust monitor every action a strong model perform in an environment, is one of the common AI Control protocol that was being implemented. Actions above a threshold go to a human, it is set by an audit budget (since human audit is expensive so its common for the protocol to use 98 99th percentile). It is reliable, cheap, and general enough to be implemented in a system where we assume a model try to intentionally misaligned. 
 
-That framing is the whole game once agents run at scale. If a fleet of agents takes millions of actions a day, the human is the scarce resource, and almost all of the judging has to be done by weaker, cheaper models. So the question I want a general answer to is: **how do you measure what a weak model is actually capable of as a judge**, separately from how it happens to phrase its verdict? This project is a first instance of that, on one monitor and one benchmark. The longer-term aim is a reusable framework: a fixed set of readouts (emitted score, forced score distribution, internal state, chain of thought), a monitor-independent label, and an evaluation that reports ranking in the low-false-positive tail rather than accuracy, so any new small model can be dropped in and compared.
+One of the core ideas that support this protocol is Semantic Capacity Asymmetry Hypothesis, evaluation (in our scenario, monitor model), required far less semantic capability than generation (every action the strong model took). Unfortunately, we don't have a proper eval science to determine whether a model is capable of monitoring a much more capable model or not (assuming SCA hypothesis is true).
 
-The thing that made me suspicious in the first place: the paper's own reference monitor, sampled twice per action, disagrees with itself by 4 to 6 points at mid scores. That is readout loss on a model you cannot open. gpt-oss-20b you can open.
+So the question I want a general answer to is: **how do you measure what a weak model is actually capable of as a judge**, how the mechanism of score verdict also work in the first place? Can we isolate model internal's that decide the score (we can). This project is a first instance of that, on one monitor and one benchmark. The longer-term aim is a reusable framework: a fixed set of readouts (emitted score, forced score distribution, internal state, chain of thought), a monitor-independent label, and an evaluation that reports ranking in the low-false-positive tail rather than accuracy, so any new small model can be dropped in and compared.
+
+So why even ask whether a score verdict actually represent the knowledge state that the monitor have? I have a hunch that because of how lossy the steps to score a verdict are (e.g., prompting rubric, CoT verdict, etc.), sometimes monitor own verdict doesn't represent the real score. The paper's own reference monitor, sampled twice per action, disagrees with itself by 4 to 6 points at mid scores. That is readout loss on a monitor model, proof on how fragile monitor setup are
 
 ## Current state
 
